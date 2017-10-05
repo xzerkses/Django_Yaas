@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Search{% if query %} Results{% endif %}{% endblock %}
+{%  block content %}
+    <form id="search_form" method="get" action=".">
+        <label for="q">Search:</label>
+        <input type="text" name="q" value="{{ query|escape }}">
+        <input type="submit" value="search">
+    </form>
+    {% if query %}
+     <h2>Results for "{{ query|escape }}":</h2>
+        {% include "auctions.html" %}
+    {% endif %}
+
+{% endblock %}

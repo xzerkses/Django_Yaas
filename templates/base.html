@@ -1,0 +1,32 @@
+{% load i18n %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Old Junk Auctions</h1>
+
+    <br>
+    <a href="/searchauction/">Search Auction</a>
+    {% if user.is_authenticated %}
+        <a href="/createauction/">Create Auction</a>
+        <a href="/logout/">Logout</a>
+    {% else %}
+        <a href="/login/">Login</a>
+        <a href="/createuser/">Add new user</a>
+    {% endif %}
+    <br>
+    {% if messages %}
+        <ul class="messages">
+            {% for msg in messages %}
+            <li{%  if msg.tags %} class="{{ msg.tags }}"{% endif %}>{{ msg }}</li>
+            {% endfor %}
+
+        </ul>
+    {% endif %}
+
+{% block content %}
+{% endblock %}
+</body>
+</html>

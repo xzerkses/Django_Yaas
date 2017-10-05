@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Auction{% endblock %}
+{% block content %}
+
+<p><b>Your are editting auction:{{ title }}</b></p>
+    <form action="/savechanges/{{id }}/" method="post">
+        {% csrf_token %}
+        <p>Title:<input type="text" name="title" id="title" value="{{ title }}"></p>
+        <p>Description: <textarea name="description" cols="40" rows="20">{{ description }}</textarea> </p>
+        <input type="submit" value="Save Changes">
+    </form>
+    {% if query %}
+    {% else %}
+
+    {% endif %}
+
+{% endblock %}
