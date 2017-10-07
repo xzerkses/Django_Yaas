@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class CreateAuction(forms.Form):
@@ -15,3 +17,10 @@ class ConfirmAuction(forms.Form):
 class Searchingform(forms.Form):
     searc=forms.CharField(label='Enter a word to search for',
     widget=forms.TextInput(attrs={'size':25}))
+
+#extends the default user registration by adding email
+class RegistrationForm(UserCreationForm):
+    email=forms.EmailField(label='Email',max_length=200,help_text='Required')
+    class Meta:
+        model=User
+        fields =('username','email','password1','password2')

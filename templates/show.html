@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ name }}</h1>
-    <p>ID:{{ id }}</p>
-    <a href="/edit/{{ name }}/">Edit contact</a>
+    <form action="/readjson/" method="post">
+        <select name="dropdown">
+            {% for rates in rates %}
+                <option value="{{ rates.value }}">{{ rates.value }}</option>
+            {% endfor %}
+        </select>
+    </form>
 {% endblock %}

@@ -9,9 +9,22 @@
 
     <br>
     <a href="/searchauction/">Search Auction</a>
+    <a href="/readjson/">Read Data</a>
+    <form action="/readjson/" method="POST">
+        <select name="dropdown">
+            {% for rates in rates %}
+                <option value="{{ rates }}">{{ rates }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+
+
+
     {% if user.is_authenticated %}
         <a href="/createauction/">Create Auction</a>
         <a href="/logout/">Logout</a>
+
     {% else %}
         <a href="/login/">Login</a>
         <a href="/createuser/">Add new user</a>

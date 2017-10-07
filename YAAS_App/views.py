@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+
+from django.db.transaction import commit
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, request
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import auth
@@ -7,45 +9,21 @@ from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from _datetime import datetime
-from YAAS_App.forms import CreateAuction, ConfirmAuction, Searchingform
+from YAAS_App.forms import CreateAuction, ConfirmAuction, Searchingform, RegistrationForm
 from YAAS_App.models import User, Auction
 from django.contrib import messages
-from django.core.mail import send_mail
-
-
-def hello(request):
-    return HttpResponse("Hello, you are at the polls.")
-def create(request,name):
-    p = User(name)
-    p.save()
-    return HttpResponse("Created: "+name)
-
-def filterPerson(request,name):
-    try:
-        p = User.objects.filter(name__contains=name)
-    except Exception:
-        return HttpResponse("Not found")
-    return render(request,"show.html", {"name": p.name, "id":p.id})
-
-def getPerson(request,name):
-    try:
-        p = User.objects.get(name=name)
-    except Exception:
-        return HttpResponse("not found")
-    return render(request,"show.html", {"name":p.name,"id":p.id})
-
-def set_name(request,name):
-    request.session["name"] = name
-    return HttpResponse("Name is set.")
-
-def get_name(request):
-    return HttpResponse(request.session["name"])
+from django.core.mail import send_mail, EmailMessage
+import requests
+import json
+import urllib3
 
 def register_user(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
-            new_user = form.save()
+            user=form.save(commit=False)
+            user.is_active=False
+            user.save()
 
             messages.add_message(request, messages.INFO, "New User is created. Please Login")
 
@@ -53,24 +31,9 @@ def register_user(request):
         else:
             form = UserCreationForm(request.POST)
     else:
-        form =UserCreationForm()
+        form =RegistrationForm()
 
     return render(request, "registration/registration.html", {'form': form})
-
-#def login_view(request):
-#   if request.method == 'POST':
-#        username = request.POST.get('username', '')
-#        password = request.POST.get('password', '')
-#        nextTo = request.GET.get('next', reverse("home"))
-#        user = auth.authenticate(username=username, password=password)
-
-#        if user is not None and user.is_active:
-#            auth.login(request,user)
-#            print (user.password)
-#            return HttpResponseRedirect(nextTo)
-
-#    return render(request,"login.html")
-
 
 
 class EditNameView(View):
@@ -101,24 +64,20 @@ class AddAuction(View):
             description=cleandata['description']
             start_price=cleandata['start_price']
             endtime=cleandata['endtime']
+
             form=ConfirmAuction()
             endingdate = endtime.strftime('%Y-%m-%d %H:%M') # from datetime to string
-            send_mail('subject', 'Notification from Old Junk Auctions',
-                      'This a notification message as you have created a Auction to Old Junk Auctions site.',
-                      'mkkvjk7@gmail.com',
-                      ['mijukiv@utu.fi'],
-                      fail_silently=False,
-                      )
+
             return render(request, 'confirmauction.html',
                           {'form':form,'seller':seller,'title':title,'description':description,
                            'start_price':start_price,'endtime':endingdate})
         else:
             messages.add_message(request,messages.ERROR,"Data in form is not valid")
             return render(request,'createauction.html',{'form':form,})
-
+@login_required()
 def saveauction(request):
     option = request.POST.get('option', '')
-    print(option)
+
     if option == 'Yes':
         a_seller=request.user
         a_title = request.POST.get('title', '')
@@ -131,14 +90,19 @@ def saveauction(request):
 
         auction = Auction(seller=a_seller,title =a_title, description = a_description, start_price=a_start_price, endtime=a_end_time)
         auction.save()
-        messages.add_message(request, messages.INFO, "New auction has been saved")
-        return HttpResponseRedirect(reverse("home"))
+        sendAuctionEmail()
+        return HttpResponseRedirect(reverse("home"))  #reverse(
     else:
         return HttpResponseRedirect(reverse("home"))
+
 def browseauctions(request):
+
     auctions=Auction.objects.all().order_by('title')
     #auctions=Auction.objects.order_by('-endtime')
-    return render(request, "auctions.html", {'auctions':auctions})
+    response = requests.get("http://api.fixer.io/latest")
+    data=response.json()
+    rates = data['rates']
+    return render(request, "auctions.html", {'auctions':auctions,'rates':rates})
 
 def savechanges(request,offset):
     auctions=Auction.objects.filter(id=offset)
@@ -154,7 +118,10 @@ def savechanges(request,offset):
         auction.title=title
         auction.description=description
         auction.save()
+
         messages.add_message(request,messages.INFO,"Auction successfully saved")
+
+
 
 
 @login_required
@@ -171,7 +138,6 @@ def editauction(request,offset):
 
 def search(request):
     form=Searchingform()
-    show_results=False
     query=request.GET.get('q','')
     if query:
         query=query.strip()
@@ -182,3 +148,40 @@ def search(request):
 
     return render(request,"searchauction.html",{'auctions': auctions,'query':query})
 
+def sendemail():
+    subject='Test notification'
+    message='This a notification message as you have created a Auction to Old Junk Auctions site.'
+    from_email='mkkvjk7@gmail.com'
+    recipient_list='mkkvjk7@live.com'
+
+    send_mail(subject, message, from_email,[recipient_list],fail_silently=False)
+    # return HttpResponse('Email sent')
+    return HttpResponseRedirect(reverse("home"))
+
+
+def sendAuctionEmail():
+    mail_subject = 'Notification from Old Junk Auctions.'
+    user = User.objects.get(id=2)
+    to_email = user.email
+    message='You have created new auction in Old Junk Auctions site.'
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    email.send()
+
+def readJson(request):
+    #response = requests.get("http://api.fixer.io/latest")
+    print("täällä")
+    #rates={'eka':2,'toka':3,'kolmas':4}
+    selection=requests.POST.get('dropdown')
+    if request.method=='GET':
+        print("ollaankin täällä")
+    else:
+
+        print("löytyi")
+        return redirect('/home/')
+    #return render(request,'base.html',{'form':form})
+    #base=data['base']
+    #response=
+    #date=data['date']
+    #rates=data['rates']
+    #messages.add_message(request, messages.INFO, "Json data read")
+    return HttpResponseRedirect(reverse("home"))

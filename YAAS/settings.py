@@ -28,15 +28,21 @@ DEBUG = True
 ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL="/home/"
 LOGOUT_REDIRECT_URL="/home/"
-# Application definition
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'parsifal_app'
-EMAIL_HOST_PASSWORD = 'MK12'
-EMAIL_USE_TLS = True
+# Application definition
+#EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+#EMAIL_FILE_PATH='/tmp/django_email_dev'
+#SITE_HOST = '127.0.0.1:8000'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = 'mkkvjk7@gmail.com'
+#EMAIL_HOST_PASSWORD = 'MK12a1r2t3o4'
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
+
 
 INSTALLED_APPS = [
+    #"'send_email.apps.SendEmailConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,5 +132,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
 
 LOGIN_URL='/login/'

@@ -21,13 +21,7 @@ from YAAS_App.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-
-    #url(r'^hello/', hello),
-    url(r'^create/', create),
     url(r'^home/',browseauctions, name="home"),
-    #url(r'^filterPerson/', filterPerson),
-    #url(r'^get_name/', get_name),
-    #url(r'^set_name/', set_name),
     url(r'^createuser/$',register_user),
     url(r'^createauction/$', AddAuction.as_view(), name="add_auction"),
     url(r'^login/$',views.login),
@@ -36,4 +30,6 @@ urlpatterns = [
     url(r'^savechanges/(\d+)$/', savechanges),
     url(r'^editauction/(\d+)/$', editauction),
     url(r'^searchauction/$', search),
+    url(r'^readjson/$', readJson),
+    #url(r'^sendview/$', sendview, name="sendmsg"),
 ]

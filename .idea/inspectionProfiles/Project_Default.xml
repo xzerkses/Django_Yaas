@@ -6,6 +6,7 @@
         <list>
           <option value="YAAS_App.models.timezone" />
           <option value="YAAS_App.views.datetime" />
+          <option value="YAAS_App.views.urllib2" />
         </list>
       </option>
     </inspection_tool>
