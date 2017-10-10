@@ -26,8 +26,8 @@ SECRET_KEY = 'qp+!+n!%1c-dy%c5v*ods%+ge)&3$ossz-o-ti7&d7jxupm!86'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-LOGIN_REDIRECT_URL="/home/"
-LOGOUT_REDIRECT_URL="/home/"
+LOGIN_REDIRECT_URL="/"
+LOGOUT_REDIRECT_URL="/"
 
 # Application definition
 #EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
@@ -36,13 +36,14 @@ LOGOUT_REDIRECT_URL="/home/"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #EMAIL_HOST = 'smtp.gmail.com'
 #EMAIL_HOST_USER = 'mkkvjk7@gmail.com'
-#EMAIL_HOST_PASSWORD = 'MK12a1r2t3o4'
+#EMAIL_HOST_PASSWORD = ''
 #EMAIL_PORT = 587
 #EMAIL_USE_TLS = True
 
 
 INSTALLED_APPS = [
     #"'send_email.apps.SendEmailConfig',
+    'mathfilters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

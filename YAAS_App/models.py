@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Auction(models.Model):
-    #id=models.AutoField(primary_key=True)
+    auction_id=models.AutoField(primary_key=True)
     seller=models.ForeignKey(User, related_name="seller")
     title=models.CharField(max_length=100)
     description=models.TextField()
@@ -22,3 +22,9 @@ class Auction(models.Model):
     def __unicode__(self):
         return self.title
 
+# class Pid(models.Model):
+#     pid_id=models.AutoField(primary_key=True)
+#     auction=models.ForeignKey(Auction)
+#     pidder=models.ForeignKey(User)
+#     pid_value=models.DecimalField(max_digits=6,decimal_places=2)
+#     pid_datetime=models.DateTimeField()

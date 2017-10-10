@@ -14,6 +14,7 @@ from YAAS_App.models import User, Auction
 from django.contrib import messages
 from django.core.mail import send_mail, EmailMessage
 import requests
+import re
 import json
 import urllib3
 
@@ -98,11 +99,19 @@ def saveauction(request):
 def browseauctions(request):
 
     auctions=Auction.objects.all().order_by('title')
-    #auctions=Auction.objects.order_by('-endtime')
     response = requests.get("http://api.fixer.io/latest")
+
+    if not "sel_currency" in request.session:
+        request.session["sel_currency"]="EUR"
+
+    if not "rate" in request.session:
+        request.session["rate"] = 1
     data=response.json()
+    currency=request.session["sel_currency"]
+    rate =request.session["rate"]
     rates = data['rates']
-    return render(request, "auctions.html", {'auctions':auctions,'rates':rates})
+
+    return render(request, "auctions.html", {'auctions':auctions,'rates':rates,'currency':currency,'rate':rate})
 
 def savechanges(request,offset):
     auctions=Auction.objects.filter(id=offset)
@@ -168,20 +177,19 @@ def sendAuctionEmail():
     email.send()
 
 def readJson(request):
-    #response = requests.get("http://api.fixer.io/latest")
-    print("täällä")
-    #rates={'eka':2,'toka':3,'kolmas':4}
-    selection=requests.POST.get('dropdown')
-    if request.method=='GET':
-        print("ollaankin täällä")
+
+    if request.method=='POST':
+        selection = request.POST.get('dropdown','')
+        value = re.split("\s", selection)
+        curr = value[0]
+        request.session["sel_currency"]=curr
+        #print(curr)
+        rate = value[1]
+        request.session["rate"] = rate
+        #print(rate)
+
     else:
 
-        print("löytyi")
-        return redirect('/home/')
-    #return render(request,'base.html',{'form':form})
-    #base=data['base']
-    #response=
-    #date=data['date']
-    #rates=data['rates']
-    #messages.add_message(request, messages.INFO, "Json data read")
+        return redirect('/')
+
     return HttpResponseRedirect(reverse("home"))

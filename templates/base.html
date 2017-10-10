@@ -9,17 +9,6 @@
 
     <br>
     <a href="/searchauction/">Search Auction</a>
-    <a href="/readjson/">Read Data</a>
-    <form action="/readjson/" method="POST">
-        <select name="dropdown">
-            {% for rates in rates %}
-                <option value="{{ rates }}">{{ rates }}</option>
-            {% endfor %}
-        </select>
-    </form>
-
-
-
 
     {% if user.is_authenticated %}
         <a href="/createauction/">Create Auction</a>
@@ -29,6 +18,15 @@
         <a href="/login/">Login</a>
         <a href="/createuser/">Add new user</a>
     {% endif %}
+    <p><b>Selected Currency:</b> {{ currency }} <td></td><b>Rate:</b> EUR vs {{ currency }} : {{ rate }} </p>
+    <form action="/readjson/" method="POST">{% csrf_token %}
+        <select name="dropdown">
+            {% for key,value in rates.items %}
+                <option value="{{ key }} {{ value }} "{% if key ==  currency %}selected{% endif %}> {{ key }}</option>
+            {% endfor %}
+        </select>
+    <input type="submit" value="Apply">
+    </form>
     <br>
     {% if messages %}
         <ul class="messages">

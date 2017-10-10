@@ -20,8 +20,8 @@ from YAAS_App.views import *
 
 
 urlpatterns = [
+    url(r'^$',browseauctions, name="home"),
     url(r'^admin/', admin.site.urls),
-    url(r'^home/',browseauctions, name="home"),
     url(r'^createuser/$',register_user),
     url(r'^createauction/$', AddAuction.as_view(), name="add_auction"),
     url(r'^login/$',views.login),
