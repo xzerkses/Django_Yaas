@@ -1,6 +1,6 @@
 # Complete Project or Leftovers requirements
 
-If you have chosen option 2 or 3, then you can submit your entire project here for grading. On the other hand, if you have chosen option 1 and submitted your project in 3 incremental parts, then you have a chance to implement those requirements which have not been graded yet in the last three assignments.
+If you have chosen option 2 or 3, then you can submit your entire project here for grading. On the other hand, if you have chosen option 1 and submitted your project in 3 incremental parts, then you have a chance to implement those requirements which have not been graded yet in the last three assignments and submitted here.
 
 Submission guidelines:
 
