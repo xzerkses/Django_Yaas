@@ -15,14 +15,16 @@
         <label> <b>Title:</b> {{ title }}</label><br>
         <label> <b>Description:</b> {{ description }}</label><br>
         <label> <b>Min Price:</b> {{ start_price }}</label><br>
+        <label> <b>Latest Pid:</b> {{ latest_pid }}</label><br>
         <label> <b>Deadline:</b> {{ endtime }}</label><br>
         <br>
-        <p><input type="radio" name="option" value="Yes">YES</p>
+        <p><input type="radio" name="option" value="Yes">Yes</p>
         <p><input type="radio" name="option" value="No">No</p>
         <INPUT TYPE=HIDDEN NAME="seller" VALUE="{{ seller }}">
         <INPUT TYPE=HIDDEN NAME="title" VALUE="{{ title }}">
         <INPUT TYPE=HIDDEN NAME="description" VALUE="{{ description }}">
         <INPUT TYPE=HIDDEN NAME="start_price" VALUE="{{ start_price }}">
+        <INPUT TYPE=HIDDEN NAME="latest_pid" VALUE="{{ latest_pid }}">
         <INPUT TYPE=HIDDEN NAME="endtime" VALUE="{{ endtime }}">
         <input type="submit" value="Submit">
     </form>

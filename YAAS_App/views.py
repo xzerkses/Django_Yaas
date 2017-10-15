@@ -1,4 +1,6 @@
+from unicodedata import decimal
 
+from decimal import Decimal
 from django.db.transaction import commit
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, request
@@ -9,21 +11,20 @@ from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from _datetime import datetime
-from YAAS_App.forms import CreateAuction, ConfirmAuction, Searchingform, RegistrationForm
-from YAAS_App.models import User, Auction
+from YAAS_App.forms import CreateAuction, ConfirmAuction, RegistrationForm, AddPid, ConfirmBan
+from YAAS_App.models import User, Auction, Pid
 from django.contrib import messages
 from django.core.mail import send_mail, EmailMessage
 import requests
 import re
-import json
-import urllib3
+
 
 def register_user(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user=form.save(commit=False)
-            user.is_active=False
+            user.is_active=True
             user.save()
 
             messages.add_message(request, messages.INFO, "New User is created. Please Login")
@@ -64,6 +65,9 @@ class AddAuction(View):
             title=cleandata['title']
             description=cleandata['description']
             start_price=cleandata['start_price']
+            print(start_price)
+            latest_pid=start_price #cleandata['latest_pid']
+            print(latest_pid)
             endtime=cleandata['endtime']
 
             form=ConfirmAuction()
@@ -71,10 +75,11 @@ class AddAuction(View):
 
             return render(request, 'confirmauction.html',
                           {'form':form,'seller':seller,'title':title,'description':description,
-                           'start_price':start_price,'endtime':endingdate})
+                           'start_price':start_price,'latest_pid':latest_pid,'endtime':endingdate})
         else:
             messages.add_message(request,messages.ERROR,"Data in form is not valid")
             return render(request,'createauction.html',{'form':form,})
+
 @login_required()
 def saveauction(request):
     option = request.POST.get('option', '')
@@ -85,11 +90,12 @@ def saveauction(request):
 
         a_description = request.POST.get('description', '')
         a_start_price = request.POST.get('start_price', '')
+        a_latest_pid=request.POST.get('latest_pid','')
         tmp_end_time = request.POST.get('endtime', '')
 
         a_end_time=datetime.strptime(tmp_end_time,'%Y-%m-%d %H:%M') #'%Y-%m-%d %H:%M'
 
-        auction = Auction(seller=a_seller,title =a_title, description = a_description, start_price=a_start_price, endtime=a_end_time)
+        auction = Auction(seller=a_seller,title =a_title, description = a_description, start_price=a_start_price,latest_pid=a_latest_pid, endtime=a_end_time)
         auction.save()
         sendAuctionEmail()
         return HttpResponseRedirect(reverse("home"))  #reverse(
@@ -127,7 +133,6 @@ def savechanges(request,offset):
         auction.title=title
         auction.description=description
         auction.save()
-
         messages.add_message(request,messages.INFO,"Auction successfully saved")
 
 
@@ -146,16 +151,18 @@ def editauction(request,offset):
                                                       'endtime':auction.endtime})
 
 def search(request):
-    form=Searchingform()
-    query=request.GET.get('q','')
-    if query:
-        query=query.strip()
-        form = Searchingform({'query':query})
-        auctions=Auction.objects.filter(title__icontains=query)[:10]
+    #form=Searchingform()
+    input=request.GET.get('query','')
+    if input:
+        input=input.strip()
+        print(input)
+        #form = Searchingform({'input':input})
+        auctions=Auction.objects.filter(title__contains=input)[:10]
+        print(auctions)
     else:
         auctions=[]
 
-    return render(request,"searchauction.html",{'auctions': auctions,'query':query})
+    return render(request,"searchauction.html",{'auctions': auctions,'input':input})
 
 def sendemail():
     subject='Test notification'
@@ -164,7 +171,7 @@ def sendemail():
     recipient_list='mkkvjk7@live.com'
 
     send_mail(subject, message, from_email,[recipient_list],fail_silently=False)
-    # return HttpResponse('Email sent')
+
     return HttpResponseRedirect(reverse("home"))
 
 
@@ -193,3 +200,124 @@ def readJson(request):
         return redirect('/')
 
     return HttpResponseRedirect(reverse("home"))
+
+
+
+@login_required
+def addpid(request,offset):
+    if request.method == 'GET':
+        print("first step is ok")
+        if not request.user.is_authenticated():
+            messages.add_message(request, messages.ERROR, "You must login before you are allowed to pid")
+            return HttpResponseRedirect('/login/?next=%s')
+        else:
+            auction = get_object_or_404(Auction, id=offset)
+
+            if not request.user.is_staff and (not request.user.username==auction.seller) and auction.auction_status=='A':
+                form=AddPid()
+
+                return render(request,'pid.html',{'form': form, 'auction':auction})
+            else:
+                if request.user.is_staff:
+                    messages.add_message(request, messages.ERROR, "Administrators are not allowed to pid")
+                if request.user.username==auction.seller:
+                    messages.add_message(request, messages.ERROR, "Seller is not allowed to pid")
+
+                return HttpResponseRedirect(reverse("home"))#if request.user == auction.seller:
+    else:
+        print("This is not GET method")
+        return HttpResponseRedirect(reverse("home"))
+
+def savepid(request,offset):
+    auction = get_object_or_404(Auction, id=offset)
+    if request.method == "POST":
+        form = AddPid(request.POST)
+        latest_pid = request.POST["latest_pid"].strip()
+
+        if form.is_valid():
+
+            if not request.user.is_staff:
+
+                cleandata = form.cleaned_data
+                a_pid_value = cleandata["pid"]
+                if a_pid_value > Decimal(latest_pid):
+
+                    a_pidder=request.user
+                    a_pid_datetime=datetime.now()
+                    print(a_pid_value)
+
+
+                    pid = Pid(pidder=a_pidder,auction_id=auction, pid_value=a_pid_value,pid_datetime=a_pid_datetime)
+                    pid.save()
+
+                    auction.latest_pid=a_pid_value
+                    auction.save()
+                    messages.add_message(request, messages.INFO, "Pid successfully saved")
+
+                    # mail_subject = "A new pid was placed in auction were you are involved."
+                    #
+                    # message = "New pid with " + a_pid_value + " was placed on auction " + auction.title + \
+                    #           ". Pidding is endind " + auction.endtime
+                    pidders = Pid.objects.filter(auction_id=auction)
+                    users=User.objects.all()
+                    res=set(users).intersection(set(pidders))
+                    print(res)
+                    for user in users:
+                        #print(user.email)
+
+                        for pidder in pidders:
+                            print(pidder)
+                            print(user.username)
+                            if user.username == pidder:
+                                print("täällä")
+                                print(user.username)
+                                print(user.email)
+
+
+                    #mylist=users.intersection(pidders)
+                    #print(listaa)
+                    print("mylist= ")
+                    #print(mylist)
+                    #pidderlist = pidders.filter(pidder__first_name__exact=User.username)
+                    print("here")
+                    print(pidders)
+                    # to_mail=
+                    # email = EmailMessage(mail_subject, message, to=[to_email])
+                    return render(request, 'pid.html', {'form': form, 'auction': auction})
+                    return HttpResponseRedirect(reverse("home"))
+
+                else:
+                    messages.add_message(request, messages.ERROR, "Pid value must be higher than previous pid")
+
+        else:
+            messages.add_message(request, messages.ERROR, "Data in form is not valid")
+            auction = Auction.objects.filter(id=offset)
+            return render(request, 'pid.html', {'form': form,'auction':auction })
+
+@login_required
+def banview(request,offset):
+    if request.method=='GET':
+        if not request.user.is_authenticated() or not request.user.is_staff:
+            messages.add_message(request, messages.ERROR, "You must login before you are allowed to ban")
+            return HttpResponseRedirect('/login/?next=%s')
+        else:
+            auction=get_object_or_404(Auction,id=offset)
+            print(auction.title)
+            form=ConfirmBan()
+            return render(request,'confirmban.html',{'auction':auction})
+
+def ban(request,offset):
+    option=request.POST.get('option','')
+    if option=='Yes':
+        auction = get_object_or_404(Auction, id=offset)
+        auction.auction_status = 'B'
+        print(auction.auction_status)
+        auction.save()
+        messages.add_message(request, messages.INFO, "Auction successfully banned")
+        return HttpResponseRedirect(reverse("home"))
+
+    else:
+
+        return HttpResponseRedirect(reverse("home"))
+
+

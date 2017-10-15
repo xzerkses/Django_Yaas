@@ -1,0 +1,36 @@
+{%  extends "base.html" %}
+
+<h2> Ban Selected Auction</h2>
+{% block content %}
+
+<p><b>Confirm Auction</b></p>
+{% if error %}
+    {{ error }}
+{% endif %}
+
+<b>{{ title }}</b>
+    <form action="/banauction/{{ auction.id }}" method="post">
+        {% csrf_token %}
+        <label> <b>Seller ID:</b> {{ auction.seller }}</label><br>
+        <label> <b>ID:</b> {{ auction.id }}</label><br>
+        <label> <b>Title:</b> {{ auction.title }}</label><br>
+        <label> <b>Auction Status:</b> {{ auction.auction_status }}</label><br>
+        <label> <b>Description:</b> {{ auction.description }}</label><br>
+        <label> <b>Min Price:</b> {{ auction.start_price }}</label><br>
+        <label> <b>Latest Pid:</b> {{ auction.latest_pid }}</label><br>
+        <label> <b>Piding ends:</b> {{ auction.endtime }}</label><br>
+        <br>
+
+        <p><input type="radio" name="option" value="Yes">Yes</p>
+        <p><input type="radio" name="option" value="No">No</p>
+        <INPUT TYPE=HIDDEN NAME="seller" VALUE="{{ auction.seller }}">
+        <INPUT TYPE=HIDDEN NAME="title" VALUE="{{ auction.title }}">
+        <INPUT TYPE=HIDDEN NAME="auction_status" VALUE="{{ auction.auction_status }}">
+        <INPUT TYPE=HIDDEN NAME="description" VALUE="{{ auction.description }}">
+        <INPUT TYPE=HIDDEN NAME="start_price" VALUE="{{ auction.start_price }}">
+        <INPUT TYPE=HIDDEN NAME="latest_pid" VALUE="{{ auction.latest_pid }}">
+        <INPUT TYPE=HIDDEN NAME="endtime" VALUE="{{ auction.endtime }}">
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}

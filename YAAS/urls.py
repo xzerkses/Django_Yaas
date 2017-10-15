@@ -31,5 +31,9 @@ urlpatterns = [
     url(r'^editauction/(\d+)/$', editauction),
     url(r'^searchauction/$', search),
     url(r'^readjson/$', readJson),
+    url(r'^addpid/(\d+)$', addpid),
+    url(r'^savepid/(\d+)$', savepid),
+    url(r'^banview/(\d+)$', banview),
+    url(r'^banauction/(\d+)$', ban),
     #url(r'^sendview/$', sendview, name="sendmsg"),
 ]

@@ -18,6 +18,7 @@
         <a href="/login/">Login</a>
         <a href="/createuser/">Add new user</a>
     {% endif %}
+
     <p><b>Selected Currency:</b> {{ currency }} <td></td><b>Rate:</b> EUR vs {{ currency }} : {{ rate }} </p>
     <form action="/readjson/" method="POST">{% csrf_token %}
         <select name="dropdown">

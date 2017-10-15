@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p><b>Place a Pid</b></p>
+  {% if error%}
+  <p> <b>{{ error }}</b> </p>
+    {% endif %}
+
+
+    <form action="/savepid/{{ auction.id }} {{ pid.id }}" method="post">
+        {% csrf_token %}
+        <label> <b>Title:</b> {{ auction.title }}</label><br>
+        <label> <b>Description:</b> {{ auction.description }}</label><br>
+        <label> <b>Auction Status:</b> {{ auction.auction_status }}</label><br>
+        <label> <b>Starting pid:</b> {{ auction.start_price }}</label><br>
+        <label> <b>Latest Pid:</b> {{ auction.latest_pid }}</label><br>
+
+
+        {{ form.as_p }}
+        <INPUT TYPE=HIDDEN NAME="auction_id" VALUE="{{auction.id}}">
+        <INPUT TYPE=HIDDEN NAME="latest_pid" VALUE="{{ auction.latest_pid }}">
+        <INPUT TYPE=HIDDEN NAME="description" VALUE="{{ description }}">
+        <INPUT TYPE=HIDDEN NAME="start_price" VALUE="{{ start_price }}">
+        <INPUT TYPE=HIDDEN NAME="endtime" VALUE="{{ endtime }}">
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
+
+

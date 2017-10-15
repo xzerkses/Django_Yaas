@@ -1,0 +1,10 @@
+{% load mathfilters %}
+{% for auction in auctions %}
+    <h2>{{ auction.title }}</h2> <a href="/editauction/{{ auction.id }}">Edit Auction</a> <a href="/addpid/{{ auction.id }}"> Add Pidd</a>
+    <p><b>Seller:</b>{{ auction.seller }}<b>Title:</b>{{ auction.title }} <b>Starting Pid:</b> <b>Latest Pid:</b></p>
+    <p><b>Please give date and time in YYYY mm dd HH:MM format: </b> <b>Auction ends :</b> {{ auction.endtime }}</p>
+    <p><b>Item description:</b>{{ auction.description }}</p>
+
+{% empty %}
+    <p>No Auctions Available<p>
+{%  endfor %}
