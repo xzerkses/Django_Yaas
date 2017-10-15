@@ -117,7 +117,7 @@ def browseauctions(request):
     rate =request.session["rate"]
     rates = data['rates']
 
-    return render(request, "auctions.html", {'auctions':auctions,'rates':rates,'currency':currency,'rate':rate})
+    return render(request, "auctionslist.html", {'auctions':auctions,'rates':rates,'currency':currency,'rate':rate})
 
 def savechanges(request,offset):
     auctions=Auction.objects.filter(id=offset)
