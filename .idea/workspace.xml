@@ -1,32 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a03c1ac7-67a2-4594-80f4-44b3b2c56596" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/YAAS_App/RestfulAPI.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/YAAS_App/myvalidators.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/confirmban.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/pid.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/searchresults.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/YAAS_App/migrations/0001_initial.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/YAAS_App/migrations/0002_auto_20171004_2020.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/YAAS_App/migrations/0003_auto_20171004_2059.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/YAAS_App/migrations/0004_auto_20171004_2308.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/YAAS_App/migrations/0005_auto_20171004_2329.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/YAAS_App/migrations/0006_auto_20171005_0612.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS/urls.py" afterPath="$PROJECT_DIR$/YAAS/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/admin.py" afterPath="$PROJECT_DIR$/YAAS_App/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/forms.py" afterPath="$PROJECT_DIR$/YAAS_App/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/models.py" afterPath="$PROJECT_DIR$/YAAS_App/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/views.py" afterPath="$PROJECT_DIR$/YAAS_App/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/auctions.html" afterPath="$PROJECT_DIR$/templates/auctions.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="$PROJECT_DIR$/templates/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/confirmauction.html" afterPath="$PROJECT_DIR$/templates/confirmauction.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/createauction.html" afterPath="$PROJECT_DIR$/templates/createauction.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/searchauction.html" afterPath="$PROJECT_DIR$/templates/searchauction.html" />
-    </list>
+    <list default="true" id="a03c1ac7-67a2-4594-80f4-44b3b2c56596" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -259,6 +234,12 @@
             </path>
             <path>
               <item name="YAAS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="YAAS" type="462c0819:PsiDirectoryNode" />
+              <item name="YAAS_App" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="YAAS" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
@@ -393,7 +374,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="0" width="1322" height="775" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17359051" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -401,7 +381,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.108270675" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1849624" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22358346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22358346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847896" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
