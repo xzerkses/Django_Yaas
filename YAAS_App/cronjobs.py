@@ -15,7 +15,7 @@ class CronJob(CronJobBase):
     RETRY_AFTER_FAILURE_MINS = 1
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS,retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
-    code = 'blogApp.cron_job'    # a unique code
+    code = 'YAAS_App.cron_job'    # a unique code
 
     def do(self):
         #auction = get_object_or_404(a)
@@ -28,5 +28,5 @@ class CronJob(CronJobBase):
                 auction.auction_status='D'
                 print('Auction ended')
 
-        print("I am running!")
+
 

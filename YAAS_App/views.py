@@ -213,6 +213,8 @@ def addpid(request,offset):
         else:
             auction = get_object_or_404(Auction, id=offset)
             print("2nd step is ok")
+            print(auction)
+            print(auction.auction_status=='A')
             if not request.user.is_staff and (not request.user.username==auction.seller) and auction.auction_status=='A':
                 form=AddPid()
                 print("3rd step is ok")
@@ -223,6 +225,7 @@ def addpid(request,offset):
                 if request.user.username==auction.seller:
                     messages.add_message(request, messages.ERROR, "Seller is not allowed to pid")
 
+                print("miksi")
                 return HttpResponseRedirect(reverse("home"))#if request.user == auction.seller:
     else:
         print("This is not GET method")
@@ -254,37 +257,17 @@ def savepid(request,offset):
                     auction.save()
                     messages.add_message(request, messages.INFO, "Pid successfully saved")
 
-                    # mail_subject = "A new pid was placed in auction were you are involved."
-                    #
-                    # message = "New pid with " + a_pid_value + " was placed on auction " + auction.title + \
-                    #           ". Pidding is endind " + auction.endtime
-                    pidders = Pid.objects.filter(auction_id=auction)
-                    print(pidders)
-                    print(User.username)
-                    users=User.objects.all()
-                    res=set(users).intersection(set(pidders))
-                    print(res)
-                    for user in users:
-                        #print(user.email)
+                    mail_subject = "A new pid was placed in auction were you are involved."
 
-                        for pidder in pidders:
-                            print(pidder)
-                            print(user.username)
-                            if user.username == pidder:
-                                print("täällä")
-                                print(user.username)
-                                print(user.email)
+                    message = "New pid with " + a_pid_value + " was placed on auction " + auction.title + \
+                               ". Pidding is endind " + auction.endtime
 
+                    pids = Pid.objects.filter(auction_id=auction)
+                    pidders = [p.pidder for p in pids]
 
-                    #mylist=users.intersection(pidders)
-                    #print(listaa)
-                    print("mylist= ")
-                    #print(mylist)
-                    #pidderlist = pidders.filter(pidder__first_name__exact=User.username)
-                    print("here")
-                    print(pidders)
-                    # to_mail=
-                    # email = EmailMessage(mail_subject, message, to=[to_email])
+                    emails = [p.email for p in pidders]
+
+                    print("emails")
 
                     return HttpResponseRedirect(reverse("home"))
 
