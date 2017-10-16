@@ -78,7 +78,7 @@ class AddAuction(View):
                            'start_price':start_price,'latest_pid':latest_pid,'endtime':endingdate})
         else:
             messages.add_message(request,messages.ERROR,"Data in form is not valid")
-            return render(request,'createauction.html',{'form':form,})
+            return render(request,'createauction.html',{'form':form})
 
 @login_required()
 def saveauction(request):
@@ -212,10 +212,10 @@ def addpid(request,offset):
             return HttpResponseRedirect('/login/?next=%s')
         else:
             auction = get_object_or_404(Auction, id=offset)
-
+            print("2nd step is ok")
             if not request.user.is_staff and (not request.user.username==auction.seller) and auction.auction_status=='A':
                 form=AddPid()
-
+                print("3rd step is ok")
                 return render(request,'pid.html',{'form': form, 'auction':auction})
             else:
                 if request.user.is_staff:
@@ -259,6 +259,8 @@ def savepid(request,offset):
                     # message = "New pid with " + a_pid_value + " was placed on auction " + auction.title + \
                     #           ". Pidding is endind " + auction.endtime
                     pidders = Pid.objects.filter(auction_id=auction)
+                    print(pidders)
+                    print(User.username)
                     users=User.objects.all()
                     res=set(users).intersection(set(pidders))
                     print(res)
@@ -283,12 +285,12 @@ def savepid(request,offset):
                     print(pidders)
                     # to_mail=
                     # email = EmailMessage(mail_subject, message, to=[to_email])
-                    return render(request, 'pid.html', {'form': form, 'auction': auction})
+
                     return HttpResponseRedirect(reverse("home"))
 
                 else:
                     messages.add_message(request, messages.ERROR, "Pid value must be higher than previous pid")
-
+                    return render(request, 'pid.html', {'form': form, 'auction': auction})
         else:
             messages.add_message(request, messages.ERROR, "Data in form is not valid")
             auction = Auction.objects.filter(id=offset)

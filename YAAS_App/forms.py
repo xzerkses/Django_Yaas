@@ -15,12 +15,16 @@ from YAAS_App.models import Auction
 def validate_endtime(endate):
     dt = datetime.now().strftime('%Y-%m-%d %H:%M')
     dateobjnow = datetime.strptime(dt, '%Y-%m-%d %H:%M')
-    dtstr=endate-dateobjnow
-    print(dtstr)
-    if (dtstr<timedelta(hours=72)):
-        raise ValidationError(('%endate) pidding time must be longer than 72 hours'),
-                              params={'endate':endate},)
+    endobj=endate.strftime('%Y-%m-%d %H:%M')
+    enddateobj = datetime.strptime(endobj,'%Y-%m-%d %H:%M')
+    print(enddateobj)
+    print(dateobjnow)
+    delta=enddateobj-dateobjnow
+    print(delta<timedelta(hours=72))
 
+    if (delta<timedelta(hours=72)):
+        print("Error")
+        raise ValidationError(' Pidding time must be longer than 72 hours')
 def validate_status(value):
     if not value == 'A':
         raise ValidationError(('pidding not possible anymore. Auction is not active anymore'),
@@ -40,7 +44,7 @@ class CreateAuction(forms.Form):
     description=forms.CharField(widget=forms.Textarea(),required=True)
     auction_status=forms.CharField(initial=Auction.ACTIVE,validators=[validate_status])#,widget=forms.HiddenInput()
     start_price=forms.DecimalField(max_digits=6,decimal_places=2,validators=[MinValueValidator(0.01)])
-    endtime=forms.DateTimeField(required=True,help_text="Please use the following format: <em>YYYY-MM-DD</em>.")
+    endtime=forms.DateTimeField(required=True,validators=[validate_endtime],help_text="Please use the following format: <em>YYYY-mm-dd HH:MM</em>.")
 
 class AddPid(forms.Form):
     pid=forms.DecimalField(required=True,max_digits=6,decimal_places=2,validators=[])

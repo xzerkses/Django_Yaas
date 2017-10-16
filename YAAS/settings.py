@@ -137,3 +137,7 @@ STATIC_URL = '/static/'
 
 
 LOGIN_URL='/login/'
+
+CRON_CLASSES = [
+    "YAAS_App.cronjobs.CronJob",
+]
