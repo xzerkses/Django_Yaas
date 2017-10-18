@@ -45,6 +45,6 @@ class Pid(models.Model):
     pid_datetime=models.DateTimeField()
 
     def __str__(self):
-        return self.pidder.username
+        return str(self.auction_id) +": "+str(self.pidder.username)
 
 

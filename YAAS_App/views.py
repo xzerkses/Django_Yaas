@@ -259,14 +259,18 @@ def savepid(request,offset):
 
                     mail_subject = "A new pid was placed in auction were you are involved."
 
-                    message = "New pid with " + a_pid_value + " was placed on auction " + auction.title + \
-                               ". Pidding is endind " + auction.endtime
+                    message = "New pid with " + str(a_pid_value) + " was placed on auction " + auction.title + ". Pidding is endind " + datetime.strftime(auction.endtime,'%Y-%m-%d %H:%M')
 
-                    pids = Pid.objects.filter(auction_id=auction)
+                    pids = Pid.objects.filter(auction_id=auction).distinct()
                     pidders = [p.pidder for p in pids]
 
-                    emails = [p.email for p in pidders]
+                    emails_addresses = list(set([p.email for p in pidders]))
 
+                    user = User.objects.get(id=2)
+                    to_email = emails_addresses
+                    #message = 'You have created new auction in Old Junk Auctions site.'
+                    email = EmailMessage(mail_subject, message, to=[to_email])
+                    email.send()
                     print("emails")
 
                     return HttpResponseRedirect(reverse("home"))
