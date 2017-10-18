@@ -25,7 +25,7 @@ class Auction(models.Model):
     #auction_id=models.AutoField(primary_key=True)
     seller=models.ForeignKey(User)
     title=models.CharField(max_length=100)
-    auction_status=models.CharField(max_length=1)
+    auction_status=models.CharField(max_length=1,default='A')
     description=models.TextField()
     start_price=models.DecimalField(max_digits=6,decimal_places=2)
     latest_pid=models.DecimalField(max_digits=6,decimal_places=2)

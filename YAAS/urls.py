@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include,url
 from django.contrib import admin
 from django.contrib.auth import views
+
+from YAAS_App.RestfulAPI import *
 from YAAS_App.views import *
 
 
@@ -27,7 +29,7 @@ urlpatterns = [
     url(r'^login/$',views.login),
     url(r'^logout/$',views.logout),
     url(r'^saveauction/$', saveauction),
-    url(r'^savechanges/(\d+)$/', savechanges),
+    url(r'^savechanges/(\d+)/$', savechanges),
     url(r'^editauction/(\d+)/$', editauction),
     url(r'^searchauction/$', search),
     url(r'^readjson/$', readJson),
@@ -35,5 +37,7 @@ urlpatterns = [
     url(r'^savepid/(\d+)$', savepid),
     url(r'^banview/(\d+)$', banview),
     url(r'^banauction/(\d+)$', ban),
+    url(r'^auctions/$', auctions_list),
+    url(r'^auctions/(\d+)$', search_auction),
     #url(r'^sendview/$', sendview, name="sendmsg"),
 ]

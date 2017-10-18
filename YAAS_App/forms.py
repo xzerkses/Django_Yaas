@@ -35,12 +35,9 @@ def validate_status(value):
         #raise ValidationError(('%auction_status) Pidding not possible. Auction is not active anymore'),
          #                     params={'auction_status': auction_status} )
 
-def validate_test(value):
-    print("we are here")
-    print(value)
 
 class CreateAuction(forms.Form):
-    title=forms.CharField(required=True,validators=[validate_test])
+    title=forms.CharField(required=True,)#validators=[validate_test])
     description=forms.CharField(widget=forms.Textarea(),required=True)
     auction_status=forms.CharField(initial=Auction.ACTIVE,validators=[validate_status])#,widget=forms.HiddenInput()
     start_price=forms.DecimalField(max_digits=6,decimal_places=2,validators=[MinValueValidator(0.01)])

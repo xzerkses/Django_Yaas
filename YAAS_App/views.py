@@ -31,8 +31,9 @@ def register_user(request):
 
             return HttpResponseRedirect(reverse("home"))
         else:
-            form = UserCreationForm(request.POST)
+            form = RegistrationForm(request.POST)
     else:
+        print("not valid")
         form =RegistrationForm()
 
     return render(request, "registration/registration.html", {'form': form})
@@ -69,13 +70,15 @@ class AddAuction(View):
             latest_pid=start_price #cleandata['latest_pid']
             print(latest_pid)
             endtime=cleandata['endtime']
+            status=cleandata['auction_status']
 
             form=ConfirmAuction()
             endingdate = endtime.strftime('%Y-%m-%d %H:%M') # from datetime to string
 
             return render(request, 'confirmauction.html',
                           {'form':form,'seller':seller,'title':title,'description':description,
-                           'start_price':start_price,'latest_pid':latest_pid,'endtime':endingdate})
+                           'start_price':start_price,'latest_pid':latest_pid,'endtime':endingdate,
+                           'status':status})
         else:
             messages.add_message(request,messages.ERROR,"Data in form is not valid")
             return render(request,'createauction.html',{'form':form})
@@ -134,6 +137,7 @@ def savechanges(request,offset):
         auction.description=description
         auction.save()
         messages.add_message(request,messages.INFO,"Auction successfully saved")
+        return HttpResponseRedirect(reverse("home"))
 
 
 
@@ -148,8 +152,10 @@ def editauction(request,offset):
             return render(request,"editauction.html",{'seller':request.user,'title':auction.title,
                                                       'description':auction.description,
                                                       'start_price':auction.start_price,
-                                                      'endtime':auction.endtime})
-
+                                                      'endtime':auction.endtime,'id':auction.id})
+        else:
+            messages.add_message(request, messages.ERROR, "Only seller is allowed to edit auction")
+            return HttpResponseRedirect(reverse("home"))
 def search(request):
     #form=Searchingform()
     input=request.GET.get('query','')
@@ -212,7 +218,7 @@ def addpid(request,offset):
             return HttpResponseRedirect('/login/?next=%s')
         else:
             auction = get_object_or_404(Auction, id=offset)
-            print("2nd step is ok")
+            #print("2nd step is ok")
             print(auction)
             print(auction.auction_status=='A')
             if not request.user.is_staff and (not request.user.username==auction.seller) and auction.auction_status=='A':
@@ -225,7 +231,7 @@ def addpid(request,offset):
                 if request.user.username==auction.seller:
                     messages.add_message(request, messages.ERROR, "Seller is not allowed to pid")
 
-                print("miksi")
+
                 return HttpResponseRedirect(reverse("home"))#if request.user == auction.seller:
     else:
         print("This is not GET method")
@@ -263,16 +269,14 @@ def savepid(request,offset):
 
                     pids = Pid.objects.filter(auction_id=auction).distinct()
                     pidders = [p.pidder for p in pids]
-
                     emails_addresses = list(set([p.email for p in pidders]))
 
-                    user = User.objects.get(id=2)
+                    seller_email=(auction.seller).email
+                    emails_addresses.append(seller_email)
                     to_email = emails_addresses
                     #message = 'You have created new auction in Old Junk Auctions site.'
                     email = EmailMessage(mail_subject, message, to=[to_email])
                     email.send()
-                    print("emails")
-
                     return HttpResponseRedirect(reverse("home"))
 
                 else:
@@ -303,10 +307,27 @@ def ban(request,offset):
         print(auction.auction_status)
         auction.save()
         messages.add_message(request, messages.INFO, "Auction successfully banned")
+
+        pids = Pid.objects.filter(auction_id=auction).distinct()
+        pidders = [p.pidder for p in pids]
+        emails_addresses = list(set([p.email for p in pidders]))
+
+        seller_email = (auction.seller).email
+        emails_addresses.append(seller_email)
+        to_email = emails_addresses
+        mail_subject="Auction "+str(auction.title)+" was banned by admin."
+        message="Auction "+str(auction.title)+" was banned by administrator. Auction did not comply to rules of auction."
+        email = EmailMessage(mail_subject, message, to=[to_email])
+        email.send()
         return HttpResponseRedirect(reverse("home"))
 
     else:
 
         return HttpResponseRedirect(reverse("home"))
+
+
+
+
+
 
 
