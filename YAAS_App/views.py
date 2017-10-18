@@ -221,6 +221,7 @@ def addpid(request,offset):
             #print("2nd step is ok")
             print(auction)
             print(auction.auction_status=='A')
+
             if not request.user.is_staff and (not request.user.username==auction.seller) and auction.auction_status=='A':
                 form=AddPid()
                 print("3rd step is ok")
@@ -230,12 +231,19 @@ def addpid(request,offset):
                     messages.add_message(request, messages.ERROR, "Administrators are not allowed to pid")
                 if request.user.username==auction.seller:
                     messages.add_message(request, messages.ERROR, "Seller is not allowed to pid")
-
-
                 return HttpResponseRedirect(reverse("home"))#if request.user == auction.seller:
     else:
         print("This is not GET method")
         return HttpResponseRedirect(reverse("home"))
+
+def check_endingtime(end_datetime):
+    dt = datetime.now().strftime('%Y-%m-%d %H:%M')
+    dateobjnow = datetime.strptime(dt, '%Y-%m-%d %H:%M')
+    endobj = end_datetime.strftime('%Y-%m-%d %H:%M')
+    enddateobj = datetime.strptime(endobj, '%Y-%m-%d %H:%M')
+    return enddateobj<dateobjnow
+
+
 
 def savepid(request,offset):
     auction = get_object_or_404(Auction, id=offset)
@@ -249,40 +257,50 @@ def savepid(request,offset):
 
                 cleandata = form.cleaned_data
                 a_pid_value = cleandata["pid"]
-                if a_pid_value > Decimal(latest_pid):
-
-                    a_pidder=request.user
-                    a_pid_datetime=datetime.now()
-                    print(a_pid_value)
 
 
-                    pid = Pid(pidder=a_pidder,auction_id=auction, pid_value=a_pid_value,pid_datetime=a_pid_datetime)
-                    pid.save()
-
-                    auction.latest_pid=a_pid_value
-                    auction.save()
-                    messages.add_message(request, messages.INFO, "Pid successfully saved")
-
-                    mail_subject = "A new pid was placed in auction were you are involved."
-
-                    message = "New pid with " + str(a_pid_value) + " was placed on auction " + auction.title + ". Pidding is endind " + datetime.strftime(auction.endtime,'%Y-%m-%d %H:%M')
-
-                    pids = Pid.objects.filter(auction_id=auction).distinct()
-                    pidders = [p.pidder for p in pids]
-                    emails_addresses = list(set([p.email for p in pidders]))
-
-                    seller_email=(auction.seller).email
-                    emails_addresses.append(seller_email)
-                    to_email = emails_addresses
-                    #message = 'You have created new auction in Old Junk Auctions site.'
-                    email = EmailMessage(mail_subject, message, to=[to_email])
-                    email.send()
-                    return HttpResponseRedirect(reverse("home"))
-
-                else:
-                    messages.add_message(request, messages.ERROR, "Pid value must be higher than previous pid")
+                if a_pid_value < Decimal(latest_pid):
+                    messages.add_message(request, messages.ERROR, "Pid value must be higher than previous pid.")
                     return render(request, 'pid.html', {'form': form, 'auction': auction})
+                print(auction.endtime)
+                print(datetime.now())
+                if check_endingtime(auction.endtime):
+                    messages.add_message(request, messages.ERROR, "Piding time has ended.")
+                    auction.auction_status='C'
+                    auction.save()
+                    return render(request, 'pid.html', {'form': form, 'auction': auction})
+
+                a_pidder=request.user
+
+                a_pid_datetime=datetime.now()
+                print(a_pid_value)
+
+
+                pid = Pid(pidder=a_pidder,auction_id=auction, pid_value=a_pid_value,pid_datetime=a_pid_datetime)
+                pid.save()
+
+                auction.latest_pid=a_pid_value
+                auction.save()
+                messages.add_message(request, messages.INFO, "Pid successfully saved")
+
+                mail_subject = "A new pid was placed in auction were you are involved."
+
+                message = "New pid with " + str(a_pid_value) + " was placed on auction " + auction.title + ". Pidding is endind " + datetime.strftime(auction.endtime,'%Y-%m-%d %H:%M')
+
+                pids = Pid.objects.filter(auction_id=auction).distinct()
+                pidders = [p.pidder for p in pids]
+                emails_addresses = list(set([p.email for p in pidders]))
+
+                seller_email=(auction.seller).email
+                emails_addresses.append(seller_email)
+                to_email = emails_addresses
+
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+                return HttpResponseRedirect(reverse("home"))
+
         else:
+
             messages.add_message(request, messages.ERROR, "Data in form is not valid")
             auction = Auction.objects.filter(id=offset)
             return render(request, 'pid.html', {'form': form,'auction':auction })

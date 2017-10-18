@@ -12,22 +12,25 @@ from django.utils import timezone
 from YAAS_App.models import Auction
 
 
-def validate_endtime(endate):
+def validate_endtime(end_date):
     dt = datetime.now().strftime('%Y-%m-%d %H:%M')
     dateobjnow = datetime.strptime(dt, '%Y-%m-%d %H:%M')
-    endobj=endate.strftime('%Y-%m-%d %H:%M')
+    endobj=end_date.strftime('%Y-%m-%d %H:%M')
     enddateobj = datetime.strptime(endobj,'%Y-%m-%d %H:%M')
-    print(enddateobj)
-    print(dateobjnow)
     delta=enddateobj-dateobjnow
-    print(delta<timedelta(hours=72))
-
     if (delta<timedelta(hours=72)):
-        print("Error")
-        raise ValidationError(' Pidding time must be longer than 72 hours')
+        raise ValidationError(' Pidding time must be longer than 72 hours.')
+
+def validate_pidtime(end_datetime):
+    if datetime.now()>end_datetime:
+        raise ValidationError('Pidding not possible anymore. Pidding ended.')
+
+
+
+
 def validate_status(value):
     if not value == 'A':
-        raise ValidationError(('pidding not possible anymore. Auction is not active anymore'),
+        raise ValidationError(('pidding not possible anymore. Auction is not active anymore.'),
                               params={'value': value})
 
 #def validate_status(auction_status):
@@ -39,13 +42,13 @@ def validate_status(value):
 class CreateAuction(forms.Form):
     title=forms.CharField(required=True,)#validators=[validate_test])
     description=forms.CharField(widget=forms.Textarea(),required=True)
-    auction_status=forms.CharField(initial=Auction.ACTIVE,validators=[validate_status])#,widget=forms.HiddenInput()
+    auction_status=forms.CharField(initial=Auction.ACTIVE,validators=[validate_status],widget=forms.HiddenInput())
     start_price=forms.DecimalField(max_digits=6,decimal_places=2,validators=[MinValueValidator(0.01)])
-    endtime=forms.DateTimeField(required=True,validators=[validate_endtime],help_text="Please use the following format: <em>YYYY-mm-dd HH:MM</em>.")
+    endtime=forms.DateTimeField(required=True,validators=[],help_text="Please use the following format: <em>YYYY-mm-dd HH:MM</em>.")
 
 class AddPid(forms.Form):
     pid=forms.DecimalField(required=True,max_digits=6,decimal_places=2,validators=[])
-
+    #end_datetime = forms.DateTimeField(validators=[validate_pidtime])
 
 class ConfirmAuction(forms.Form):
     CHOICES = [(x, x) for x in ("Yes", "No")]

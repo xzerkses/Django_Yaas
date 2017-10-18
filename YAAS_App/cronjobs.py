@@ -24,7 +24,7 @@ class CronJob(CronJobBase):
         for auction in auctions:
             print(auction.endtime.strftime('%Y-%m-%d %H:%M') )
             #print(datetime.now())
-            if auction.endtime.strftime('%Y-%m-%d %H:%M') == datetime.now().strftime('%Y-%m-%d %H:%M'):
+            if auction.auction_status=='A' and auction.endtime.strftime('%Y-%m-%d %H:%M') == datetime.now().strftime('%Y-%m-%d %H:%M'):
                 auction.auction_status='D'
                 print('Auction ended')
 
