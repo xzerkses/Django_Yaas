@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% load mathfilters %}
+
 {% for auction in auctions %}
     {% if auction.auction_status != 'B' %}
         <h2>{{ auction.title }}</h2> <a href="/editauction/{{ auction.id }}">Edit Auction</a> <a href="/addpid/{{ auction.id }}"> Add Pidd</a>
