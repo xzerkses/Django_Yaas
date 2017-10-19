@@ -40,5 +40,7 @@ urlpatterns = [
     url(r'^auctions/$', auctions_list),
     url(r'^auctions/(\d+)$', search_auction),
     url(r'^get_highest_pid/(\d+)$', getWinner),
+    url(r'^api/auctions/(?P<pk>\d+)/$', BlogDetailApi.as_view()),
+
     #url(r'^sendview/$', sendview, name="sendmsg"),
 ]

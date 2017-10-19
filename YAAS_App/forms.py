@@ -1,13 +1,15 @@
 from datetime import datetime,timedelta
 
-
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 #from YAAS_App.myvalidators import validate_endtime
 from django import forms
 from django.core.validators import MinValueValidator
-from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 from YAAS_App.models import Auction
 
@@ -66,5 +68,8 @@ class RegistrationForm(UserCreationForm):
         model=User
         fields =('username','email','password1','password2')
 
-
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 

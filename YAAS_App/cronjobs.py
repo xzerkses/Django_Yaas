@@ -28,7 +28,7 @@ class CronJob(CronJobBase):
                 auction.auction_status='D'
                 auction.latest_pid
                 pids=Pid.objects.filter(auction_id=auction)
-                pids
+
                 mail_subject = "Auction " + str(auction.title) + " is resolved by the system."
                 msg = "Auction " + str(auction.title) + " is resolved. Winner is"
 
