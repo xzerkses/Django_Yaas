@@ -100,7 +100,10 @@ def saveauction(request):
 
         auction = Auction(seller=a_seller,title =a_title, description = a_description, start_price=a_start_price,latest_pid=a_latest_pid, endtime=a_end_time)
         auction.save()
-        sendAuctionEmail()
+        subject='Notification from Old Junk Auctions.'
+        body='You have created new auction in Old Junk Auctions site.'
+        to=(User.objects.get(id=2)).email
+        sendEmail(subject,body,to)
         return HttpResponseRedirect(reverse("home"))  #reverse(
     else:
         return HttpResponseRedirect(reverse("home"))
@@ -181,11 +184,10 @@ def sendemail():
     return HttpResponseRedirect(reverse("home"))
 
 
-def sendAuctionEmail():
-    mail_subject = 'Notification from Old Junk Auctions.'
-    user = User.objects.get(id=2)
-    to_email = user.email
-    message='You have created new auction in Old Junk Auctions site.'
+def sendEmail(subject, body, receivers):
+    mail_subject = subject
+    to_email = receivers
+    message=body
     email = EmailMessage(mail_subject, message, to=[to_email])
     email.send()
 
@@ -284,19 +286,14 @@ def savepid(request,offset):
                 messages.add_message(request, messages.INFO, "Pid successfully saved")
 
                 mail_subject = "A new pid was placed in auction were you are involved."
-
-                message = "New pid with " + str(a_pid_value) + " was placed on auction " + auction.title + ". Pidding is endind " + datetime.strftime(auction.endtime,'%Y-%m-%d %H:%M')
+                msg = "New pid with " + str(a_pid_value) + " was placed on auction " + auction.title + ". Pidding is endind " + datetime.strftime(auction.endtime,'%Y-%m-%d %H:%M')
 
                 pids = Pid.objects.filter(auction_id=auction).distinct()
                 pidders = [p.pidder for p in pids]
                 emails_addresses = list(set([p.email for p in pidders]))
+                emails_addresses.append((auction.seller).email)
 
-                seller_email=(auction.seller).email
-                emails_addresses.append(seller_email)
-                to_email = emails_addresses
-
-                email = EmailMessage(mail_subject, message, to=[to_email])
-                email.send()
+                sendEmail(mail_subject, msg, emails_addresses)
                 return HttpResponseRedirect(reverse("home"))
 
         else:
@@ -326,25 +323,36 @@ def ban(request,offset):
         auction.save()
         messages.add_message(request, messages.INFO, "Auction successfully banned")
 
-        pids = Pid.objects.filter(auction_id=auction).distinct()
+        mail_subject="Auction "+str(auction.title)+" was banned by admin."
+        msg="Auction "+str(auction.title)+" was banned by administrator. Auction did not comply to rules of auction."
+
+        pids = Pid.objects.filter(auction_id=auction)
         pidders = [p.pidder for p in pids]
         emails_addresses = list(set([p.email for p in pidders]))
+        emails_addresses.append((auction.seller).email)
+        sendEmail(mail_subject, msg, emails_addresses)
 
-        seller_email = (auction.seller).email
-        emails_addresses.append(seller_email)
-        to_email = emails_addresses
-        mail_subject="Auction "+str(auction.title)+" was banned by admin."
-        message="Auction "+str(auction.title)+" was banned by administrator. Auction did not comply to rules of auction."
-        email = EmailMessage(mail_subject, message, to=[to_email])
-        email.send()
         return HttpResponseRedirect(reverse("home"))
 
     else:
 
         return HttpResponseRedirect(reverse("home"))
 
-
-
+def getWinner(request,offset):
+    #auction=Auction.objects.filter(auction=offset)
+    pids=Pid.objects.filter(auction_id=offset)
+    print(pids)
+    pidder=[pid.pidder for pid in pids]
+    pid_values=[pid.pid_value for pid in pids]
+    winning_pid=max(pid_values)
+    print(winning_pid)
+    winner=pids.filter(pid_value=winning_pid)
+    win=[pid.pidder for pid in winner]
+    print(win)
+    email=[user.email for user in win]
+    print(email)
+    messages.add_message(request, messages.INFO, "Winner is "+str("hessu"))
+    return HttpResponseRedirect(reverse("home"))
 
 
 

@@ -39,5 +39,6 @@ urlpatterns = [
     url(r'^banauction/(\d+)$', ban),
     url(r'^auctions/$', auctions_list),
     url(r'^auctions/(\d+)$', search_auction),
+    url(r'^get_highest_pid/(\d+)$', getWinner),
     #url(r'^sendview/$', sendview, name="sendmsg"),
 ]

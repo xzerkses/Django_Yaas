@@ -1,5 +1,5 @@
 from YAAS_App.models import Auction
-
+from YAAS_App.views import *
 __author__ = 'selab'
 
 from django_cron import CronJobBase, Schedule
@@ -24,9 +24,18 @@ class CronJob(CronJobBase):
         for auction in auctions:
             print(auction.endtime.strftime('%Y-%m-%d %H:%M') )
             #print(datetime.now())
-            if auction.auction_status=='A' and auction.endtime.strftime('%Y-%m-%d %H:%M') == datetime.now().strftime('%Y-%m-%d %H:%M'):
+            if auction.auction_status=='A' and check_endingtime(auction.endtime) or auction.auction_status=='C':
                 auction.auction_status='D'
-                print('Auction ended')
+                auction.latest_pid
+                pids=Pid.objects.filter(auction_id=auction)
+                pids
+                mail_subject = "Auction " + str(auction.title) + " is resolved by the system."
+                msg = "Auction " + str(auction.title) + " is resolved. Winner is"
 
+                pids = Pid.objects.filter(auction_id=auction).distinct()
+                pidders = [p.pidder for p in pids]
+                emails_addresses = list(set([p.email for p in pidders]))
+                emails_addresses.append((auction.seller).email)
+                sendEmail(mail_subject, msg, emails_addresses)
 
 
