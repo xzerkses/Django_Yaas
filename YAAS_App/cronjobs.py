@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from datetime import datetime
 
 class CronJob(CronJobBase):
-    RUN_EVERY_MINS = 1
+    RUN_EVERY_MINS = 5
     #'11:30', '14:00', '23:15'
 
     #RUN_AT_TIMES = [runtimes]

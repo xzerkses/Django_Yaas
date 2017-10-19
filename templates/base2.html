@@ -1,12 +1,37 @@
-<!DOCTYPE html>
+{% load i18n %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-{%  block content %}
-{%  endblock %}
+<h1>Old Junk Auctions</h1>
 
+    <br>
+    <a href="/searchauction/">Search Auction</a>
+
+    {% if user.is_authenticated %}
+        <a href="/createauction/">Create Auction</a>
+        <a href="/logout/">Logout</a>
+
+    {% else %}
+        <a href="/login/">Login</a>
+        <a href="/createuser/">Add new user</a>
+    {% endif %}
+
+    <p><b>Selected Currency:</b> {{ currency }} <td></td><b>Rate:</b> EUR vs {{ currency }} : {{ rate }} </p>
+
+    <br>
+    {% if messages %}
+        <ul class="messages">
+            {% for msg in messages %}
+            <li{%  if msg.tags %} class="{{ msg.tags }}"{% endif %}>{{ msg }}</li>
+            {% endfor %}
+
+        </ul>
+    {% endif %}
+
+{% block content %}
+{% endblock %}
 </body>
 </html>

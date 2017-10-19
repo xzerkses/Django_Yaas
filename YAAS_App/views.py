@@ -10,7 +10,7 @@ from django.contrib import auth
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
-from _datetime import datetime
+from _datetime import datetime, timedelta
 from YAAS_App.forms import CreateAuction, ConfirmAuction, RegistrationForm, AddPid, ConfirmBan
 from YAAS_App.models import User, Auction, Pid
 from django.contrib import messages
@@ -198,11 +198,8 @@ def readJson(request):
         value = re.split("\s", selection)
         curr = value[0]
         request.session["sel_currency"]=curr
-        #print(curr)
         rate = value[1]
         request.session["rate"] = rate
-        #print(rate)
-
     else:
 
         return redirect('/')
@@ -220,20 +217,15 @@ def addpid(request,offset):
             return HttpResponseRedirect('/login/?next=%s')
         else:
             auction = get_object_or_404(Auction, id=offset)
-            #print("2nd step is ok")
-            print(auction)
-            print(auction.auction_status=='A')
-
-            if not request.user.is_staff and (not request.user.username==auction.seller) and auction.auction_status=='A':
+            if not request.user.is_staff and not (request.user.username==str(auction.seller)) and auction.auction_status=='A':
                 form=AddPid()
-                print("3rd step is ok")
                 return render(request,'pid.html',{'form': form, 'auction':auction})
             else:
                 if request.user.is_staff:
                     messages.add_message(request, messages.ERROR, "Administrators are not allowed to pid")
-                if request.user.username==auction.seller:
+                if request.user.username==str(auction.seller):
                     messages.add_message(request, messages.ERROR, "Seller is not allowed to pid")
-                return HttpResponseRedirect(reverse("home"))#if request.user == auction.seller:
+                return HttpResponseRedirect(reverse("home"))
     else:
         print("This is not GET method")
         return HttpResponseRedirect(reverse("home"))
@@ -264,8 +256,12 @@ def savepid(request,offset):
                 if a_pid_value < Decimal(latest_pid):
                     messages.add_message(request, messages.ERROR, "Pid value must be higher than previous pid.")
                     return render(request, 'pid.html', {'form': form, 'auction': auction})
-                print(auction.endtime)
-                print(datetime.now())
+                #print(auction.endtime)
+                #print(datetime.now())
+                if(check_endingtime(auction.endtime-timedelta(minutes=5))):
+                    auction.endtime=auction.endtime+timedelta(minutes=5)
+                    auction.save()
+
                 if check_endingtime(auction.endtime):
                     messages.add_message(request, messages.ERROR, "Piding time has ended.")
                     auction.auction_status='C'
@@ -345,12 +341,12 @@ def getWinner(request,offset):
     pidder=[pid.pidder for pid in pids]
     pid_values=[pid.pid_value for pid in pids]
     winning_pid=max(pid_values)
-    print(winning_pid)
+    #print(winning_pid)
     winner=pids.filter(pid_value=winning_pid)
     win=[pid.pidder for pid in winner]
-    print(win)
+   # print(win)
     email=[user.email for user in win]
-    print(email)
+    #print(email)
     messages.add_message(request, messages.INFO, "Winner is "+str("hessu"))
     return HttpResponseRedirect(reverse("home"))
 

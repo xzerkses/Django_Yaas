@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL="/"
 LOGOUT_REDIRECT_URL="/"
-
+LOGIN_URL='/login/'
 # Application definition
 #EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 #EMAIL_FILE_PATH='/tmp/django_email_dev'
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'django_cron',
     'YAAS_App',
 ]
@@ -136,7 +137,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-LOGIN_URL='/login/'
+
 
 CRON_CLASSES = [
     "YAAS_App.cronjobs.CronJob",
