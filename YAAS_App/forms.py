@@ -35,10 +35,6 @@ def validate_status(value):
         raise ValidationError(('pidding not possible anymore. Auction is not active anymore.'),
                               params={'value': value})
 
-#def validate_status(auction_status):
- #   if not auction_status=='active':
-        #raise ValidationError(('%auction_status) Pidding not possible. Auction is not active anymore'),
-         #                     params={'auction_status': auction_status} )
 
 
 class CreateAuction(forms.Form):
@@ -46,11 +42,11 @@ class CreateAuction(forms.Form):
     description=forms.CharField(widget=forms.Textarea(),required=True)
     auction_status=forms.CharField(initial=Auction.ACTIVE,validators=[validate_status],widget=forms.HiddenInput())
     start_price=forms.DecimalField(max_digits=6,decimal_places=2,validators=[MinValueValidator(0.01)])
-    endtime=forms.DateTimeField(required=True,validators=[],help_text="Please use the following format: <em>YYYY-mm-dd HH:MM</em>.")
+    endtime=forms.DateTimeField(required=True,validators=[validate_endtime],help_text="Please use the following format: <em>YYYY-mm-dd HH:MM</em>.")
 
 class AddPid(forms.Form):
     pid=forms.DecimalField(required=True,max_digits=6,decimal_places=2,validators=[])
-    #end_datetime = forms.DateTimeField(validators=[validate_pidtime])
+
 
 class ConfirmAuction(forms.Form):
     CHOICES = [(x, x) for x in ("Yes", "No")]

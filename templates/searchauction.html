@@ -6,6 +6,7 @@
         <input type="text" name="query" value="{{ input|escape }}">
         <input type="submit" value="Search">
     </form>
+
     {% if input %}
      <h2>Results for "{{ input|escape }}":</h2>
         {% include "searchresults.html" %}

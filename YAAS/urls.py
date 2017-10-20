@@ -39,11 +39,9 @@ urlpatterns = [
     url(r'^banauction/(\d+)$', ban),
     url(r'^api/auctions/$', AuctionList.as_view()),
     url(r'^api/auctions/(?P<pk>\d+)/$', AuctionSearch.as_view()),
-    url(r'^get_highest_pid/(\d+)$', getWinner),
-    url(r'^api/auctions/pid/$', TokenAuthAddPid.as_view()),
-    #url(r'^api/auctions/(?P<pk>\d+)/$', BlogDetailApi.as_view()),
-    #url(r'^api/auctions/', AuctionList.as_view()),
-    #url(r'^sendview/$', sendview, name="sendmsg"),
+
+    #url(r'^api/auctions/pid/$', TokenAuthAddPid.as_view()),
+
 ]
 
 urlpatterns=format_suffix_patterns(urlpatterns)

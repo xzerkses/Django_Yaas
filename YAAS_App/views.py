@@ -43,12 +43,7 @@ class EditNameView(View):
         p = get_object_or_404(User, name=name)
         return render(request, "edit.html", {"name": p.name})
 
-    def post(self, request, name):
-        p = get_object_or_404(User, name=name)
-        p.name = request.POST["name"]
-        p.save()
-        # Always redirect after a successful POST request
-        return HttpResponseRedirect('/get/' + p.name)
+
 
 @method_decorator(login_required, name="dispatch")
 class AddAuction(View):
@@ -142,8 +137,6 @@ def savechanges(request,offset):
         return HttpResponseRedirect(reverse("home"))
 
 
-
-
 @login_required
 def editauction(request,offset):
     if not request.user.is_authenticated():
@@ -171,16 +164,6 @@ def search(request):
         auctions=[]
 
     return render(request,"searchauction.html",{'auctions': auctions,'input':input})
-
-def sendemail():
-    subject='Test notification'
-    message='This a notification message as you have created a Auction to Old Junk Auctions site.'
-    from_email='mkkvjk7@gmail.com'
-    recipient_list='mkkvjk7@live.com'
-
-    send_mail(subject, message, from_email,[recipient_list],fail_silently=False)
-
-    return HttpResponseRedirect(reverse("home"))
 
 
 def sendEmail(subject, body, receivers):
@@ -255,8 +238,7 @@ def savepid(request,offset):
                 if a_pid_value < Decimal(latest_pid):
                     messages.add_message(request, messages.ERROR, "Pid value must be higher than previous pid.")
                     return render(request, 'pid.html', {'form': form, 'auction': auction})
-                #print(auction.endtime)
-                #print(datetime.now())
+
                 if(check_endingtime(auction.endtime-timedelta(minutes=5))):
                     auction.endtime=auction.endtime+timedelta(minutes=5)
                     auction.save()
@@ -333,21 +315,7 @@ def ban(request,offset):
 
         return HttpResponseRedirect(reverse("home"))
 
-def getWinner(request,offset):
-    #auction=Auction.objects.filter(auction=offset)
-    pids=Pid.objects.filter(auction_id=offset)
-    print(pids)
-    pidder=[pid.pidder for pid in pids]
-    pid_values=[pid.pid_value for pid in pids]
-    winning_pid=max(pid_values)
-    #print(winning_pid)
-    winner=pids.filter(pid_value=winning_pid)
-    win=[pid.pidder for pid in winner]
-   # print(win)
-    email=[user.email for user in win]
-    #print(email)
-    messages.add_message(request, messages.INFO, "Winner is "+str("hessu"))
-    return HttpResponseRedirect(reverse("home"))
+
 
 
 

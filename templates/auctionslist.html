@@ -8,7 +8,7 @@
         <p><b>Seller:</b>{{ auction.seller }}<b>Title:</b>{{ auction.title }} <b>Starting Pid:</b>{{ auction.start_price|mul:rate }} <b>Latest Pid:</b>{{ auction.latest_pid|mul:rate}} </p>
         <p><b>Auction ends :</b> {{ auction.endtime }}</p>
         <p><b>Item description:</b>{{ auction.description }}</p>
-        <a href="/get_highest_pid/{{ auction.id }}"> Get Highest Pid</a>
+
     {% endif %}
 {% empty %}
     <p>No Auctions Available<p>

@@ -9,7 +9,7 @@
 
     <br>
     <a href="/searchauction/">Search Auction</a>
-
+    <a href="/">Home</a>
     {% if user.is_authenticated %}
         <a href="/createauction/">Create Auction</a>
         <a href="/logout/">Logout</a>
@@ -18,8 +18,6 @@
         <a href="/login/">Login</a>
         <a href="/createuser/">Add new user</a>
     {% endif %}
-
-    <p><b>Selected Currency:</b> {{ currency }} <td></td><b>Rate:</b> EUR vs {{ currency }} : {{ rate }} </p>
 
     <br>
     {% if messages %}
