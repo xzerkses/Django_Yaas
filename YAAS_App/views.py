@@ -38,13 +38,6 @@ def register_user(request):
     return render(request, "registration/registration.html", {'form': form})
 
 
-class EditNameView(View):
-    def get(self, request, name):
-        p = get_object_or_404(User, name=name)
-        return render(request, "edit.html", {"name": p.name})
-
-
-
 @method_decorator(login_required, name="dispatch")
 class AddAuction(View):
 
@@ -192,25 +185,21 @@ def readJson(request):
 
 @login_required
 def addpid(request,offset):
-    if request.method == 'GET':
-        print("first step is ok")
-        if not request.user.is_authenticated():
-            messages.add_message(request, messages.ERROR, "You must login before you are allowed to pid")
-            return HttpResponseRedirect('/login/?next=%s')
-        else:
-            auction = get_object_or_404(Auction, id=offset)
-            if not request.user.is_staff and not (request.user.username==str(auction.seller)) and auction.auction_status=='A':
-                form=AddPid()
-                return render(request,'pid.html',{'form': form, 'auction':auction})
-            else:
-                if request.user.is_staff:
-                    messages.add_message(request, messages.ERROR, "Administrators are not allowed to pid")
-                if request.user.username==str(auction.seller):
-                    messages.add_message(request, messages.ERROR, "Seller is not allowed to pid")
-                return HttpResponseRedirect(reverse("home"))
+
+    if not request.user.is_authenticated():
+        messages.add_message(request, messages.ERROR, "You must login before you are allowed to pid")
+        return HttpResponseRedirect('/login/?next=%s')
     else:
-        print("This is not GET method")
-        return HttpResponseRedirect(reverse("home"))
+        auction = get_object_or_404(Auction, id=offset)
+        if not request.user.is_staff and not (request.user.username==str(auction.seller)) and auction.auction_status=='A':
+            form=AddPid()
+            return render(request,'pid.html',{'form': form, 'auction':auction})
+        else:
+            if request.user.is_staff:
+                messages.add_message(request, messages.ERROR, "Administrators are not allowed to pid")
+            if request.user.username==str(auction.seller):
+                messages.add_message(request, messages.ERROR, "Seller is not allowed to pid")
+            return HttpResponseRedirect(reverse("home"))
 
 def check_endingtime(end_datetime):
     dt = datetime.now().strftime('%Y-%m-%d %H:%M')
@@ -235,8 +224,8 @@ def savepid(request,offset):
                 a_pid_value = cleandata["pid"]
 
 
-                if a_pid_value < Decimal(latest_pid):
-                    messages.add_message(request, messages.ERROR, "Pid value must be higher than previous pid.")
+                if a_pid_value > 0.01+Decimal(latest_pid):
+                    messages.add_message(request, messages.ERROR, "Pid value must be at least 0.01€ higher than previous pid.")
                     return render(request, 'pid.html', {'form': form, 'auction': auction})
 
                 if(check_endingtime(auction.endtime-timedelta(minutes=5))):
@@ -281,22 +270,21 @@ def savepid(request,offset):
 
 @login_required
 def banview(request,offset):
-    if request.method=='GET':
-        if not request.user.is_authenticated() or not request.user.is_staff:
-            messages.add_message(request, messages.ERROR, "You must login before you are allowed to ban")
-            return HttpResponseRedirect('/login/?next=%s')
-        else:
-            auction=get_object_or_404(Auction,id=offset)
-            print(auction.title)
-            form=ConfirmBan()
-            return render(request,'confirmban.html',{'auction':auction})
+    if not request.user.is_authenticated() or not request.user.is_staff:
+        messages.add_message(request, messages.ERROR, "You must login before you are allowed to ban")
+        return HttpResponseRedirect('/login/?next=%s')
+    else:
+        auction=get_object_or_404(Auction,id=offset)
+        print(auction.title)
+        form=ConfirmBan()
+        return render(request,'confirmban.html',{'auction':auction})
 
 def ban(request,offset):
     option=request.POST.get('option','')
     if option=='Yes':
         auction = get_object_or_404(Auction, id=offset)
         auction.auction_status = 'B'
-        print(auction.auction_status)
+
         auction.save()
         messages.add_message(request, messages.INFO, "Auction successfully banned")
 

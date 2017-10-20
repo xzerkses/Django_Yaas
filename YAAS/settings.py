@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_cron',
     'YAAS_App',
+
 ]
 
 MIDDLEWARE = [

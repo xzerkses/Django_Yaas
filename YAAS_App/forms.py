@@ -30,6 +30,7 @@ def validate_pidtime(end_datetime):
 
 
 
+
 def validate_status(value):
     if not value == 'A':
         raise ValidationError(('pidding not possible anymore. Auction is not active anymore.'),
