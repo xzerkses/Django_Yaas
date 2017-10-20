@@ -1,12 +1,11 @@
-from unicodedata import decimal
 
 from decimal import Decimal
-from django.db.transaction import commit
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, request
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import auth
+
+
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.views import View

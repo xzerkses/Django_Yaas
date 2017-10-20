@@ -16,10 +16,10 @@ Including another URLconf
 from django.conf.urls import include,url
 from django.contrib import admin
 from django.contrib.auth import views
-
+from rest_framework.urlpatterns import format_suffix_patterns
 from YAAS_App.RestfulAPI import *
 from YAAS_App.views import *
-
+#from YAAS_App import views
 
 urlpatterns = [
     url(r'^$',browseauctions, name="home"),
@@ -37,10 +37,13 @@ urlpatterns = [
     url(r'^savepid/(\d+)$', savepid),
     url(r'^banview/(\d+)$', banview),
     url(r'^banauction/(\d+)$', ban),
-    url(r'^auctions/$', auctions_list),
-    url(r'^auctions/(\d+)$', search_auction),
+    url(r'^api/auctions/$', AuctionList.as_view()),
+    url(r'^api/auctions/(?P<pk>\d+)/$', AuctionSearch.as_view()),
     url(r'^get_highest_pid/(\d+)$', getWinner),
-    url(r'^api/auctions/(?P<pk>\d+)/$', BlogDetailApi.as_view()),
-
+    url(r'^api/auctions/pid/$', TokenAuthAddPid.as_view()),
+    #url(r'^api/auctions/(?P<pk>\d+)/$', BlogDetailApi.as_view()),
+    #url(r'^api/auctions/', AuctionList.as_view()),
     #url(r'^sendview/$', sendview, name="sendmsg"),
 ]
+
+urlpatterns=format_suffix_patterns(urlpatterns)

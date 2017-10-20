@@ -1,5 +1,5 @@
 import base64
-user = request.user.username
+#user = request.user.username
 password = "admin"
 
 hd_value = '%s:%s' % (user, password)

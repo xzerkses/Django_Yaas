@@ -1,90 +1,125 @@
 import base64
-
-from django.contrib.auth import authenticate
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Auction, Pid
+from .serializers import PidSerializer, AuctionSerializer
+from django.contrib.auth import authenticate
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotAllowed, request
+
 from django.core import serializers
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from YAAS_App.models import Auction
+#from YAAS_App.models import Auction
 
-def auctions_list(request):
-    auctions = Auction.objects.all()
-    auctions_json = serializers.serialize("json", auctions)
-    return HttpResponse(auctions_json, content_type="application/json")
+# def auctions_list(request):
+#     auctions = Auction.objects.all()
+#     auctions_json = serializers.serialize("json", auctions)
+#     return HttpResponse(auctions_json, content_type="application/json")
+#
+# def search_auction(request, offset):
+#         auction=Auction.objects.filter(id=offset)
+#
+#         if(auction.exists()):
+#             auction_json=serializers.serialize("json",auction)
+#             return HttpResponse(auction_json, content_type="application/json")
+#         else:
+#             print("tööt")
+#             response=HttpResponse()
+#             response.status_code = 404
+#             return response
 
-def search_auction(request, offset):
-        auction=Auction.objects.filter(id=offset)
+class AuctionList(APIView):
+    def get(self, request):
+        try:
+            auctions = Auction.objects.all()
+        except Auction.DoesNotExist:
+            return HttpResponse(status=404)
+        serialized_data = AuctionSerializer(auctions, many=True)
+        # return HttpResponse(serialized_data, content_type="application/json")
+        return Response(serialized_data.data)
+    # def get(self, request):
+    #
+    #     auctions=Auction.objects.all()
+    #     serialized_data=AuctionSerializer(auctions, many=True)
+    #     #return HttpResponse(serialized_data, content_type="application/json")
+    #     return Response(serialized_data.data, content_type="application/json")
 
-        if(auction.exists()):
-            auction_json=serializers.serialize("json",auction)
-            return HttpResponse(auction_json, content_type="application/json")
+
+class AuctionSearch(APIView):
+
+    def get(self, request,pk):
+        try:
+            auction = Auction.objects.get(pk=pk)
+        except Auction.DoesNotExist:
+            return HttpResponse(status=404)
+        serialized_data = AuctionSerializer(auction)
+        #return HttpResponse(serialized_data, content_type="application/json")
+        return Response(serialized_data.data)
+
+
+
+# def search_auction(request,pk):
+#     auction=Auction.objects.get(pk=pk)
+#     serialized_data=AuctionSerializer(auction)
+#     print(serialized_data)
+#     return Response(serialized_data.data)
+#
+#
+class TokenAuthAddPid(APIView):
+    auth_classes=(TokenAuthentication,)
+    permission_classes(IsAuthenticated,)
+    # if request.method=='GET':
+    #     serializer = PidSerializer()
+    #     return Response(serializer.data)
+
+    def put(self, request):
+        print("1st täällä")
+        data=request.DATA
+
+        serialized_data=PidSerializer(data=data)
+        if serialized_data.is_valid():
+            serialized_data.save(serialized_data.data,status=201)
+            print("onnistui täällä")
+
         else:
-            print("tööt")
-            response=HttpResponse()
-            response.status_code = 404
-            return response
+            return Response(serialized_data.errors, status=404)
+#
+# @api_view(['GET', 'POST'])
+# @authentication_classes([BasicAuthentication])
+# @permission_classes([IsAuthenticated])
+# def auction_detail(request, pk):
+#
+#     try:
+#         blog = Auction.objects.get(pk=pk)
+#     except Auction.DoesNotExist:
+#         return HttpResponse(status=404)
+#
+#     if request.method == 'GET':
+#         serializer = PidSerializer(blog)
+#         return Response(serializer.data)
+#
+#     elif request.method == 'POST':
+#         data = request.DATA
+#         print(request.DATA)
+#         serializer = PidSerializer(blog, data=data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors, status=400)
 
-@method_decorator(csrf_exempt, name="dispatch")
-class BlogDetailApi(View):
-    def dispatch(self, request, *args, **kwargs):
-        self.request = request
-        self.pk = kwargs["pk"]
-        # Look up the user and throw a 404 if it doesn't exist
-        #self.user = get_object_or_404(User, username=username)
+# @api_view(['GET'])
+# @renderer_classes([JSONRenderer,])
+# def blog_list(request):
+#     if request.method == 'GET':
+#         blogs = BlogPost.objects.all()
+#         serializer = BlogPostSerializer(blogs, many=True)
+#         return Response(serializer.data)
 
-        if not request.method in ["GET","PUT","DELETE"]:
-            return HttpResponseNotAllowed(["GET","PUT","DELETE"])
-        # Check and store HTTP basic authentication, even for methods that
-        # don't require authorization.
-
-        self.authenticate_user()
-        if self.authenticated_user is None:
-            return HttpResponseForbidden()
-
-        # Call the request method handler
-        return super(BlogDetailApi, self).dispatch(request, *args, **kwargs)
-
-    def authenticate_user(self):
-        # Pull the auth info out of the Authorization: header
-        auth_info = self.request.META.get("HTTP_AUTHORIZATION", None)
-
-        print (auth_info)
-        if auth_info and auth_info.startswith("Basic "):
-            basic_info = auth_info.split(" ", 1)[1]
-            decode_info = base64.b64decode(basic_info)
-            print (decode_info)
-            u, p = str(decode_info, 'utf-8').split(":")
-            print (u, p)
-
-            self.user = u
-            # Authenticate against the User database. This will set
-            # authenticated_user to None if authentication fails.
-            self.authenticated_user = authenticate(username=u, password=p)
-            print ("self.authenticated_user,", self.authenticated_user)
-        else:
-            self.authenticated_user = None
-
-    def forbidden(self):
-        response = HttpResponseForbidden()
-        response["WWW-Authenticate"] = 'Basic realm="BlogPost"'
-        return response
-
-    def delete(self, *args, **kwargs):
-        # Look up the bookmark...
-        auction = get_object_or_404(Auction, id=self.pk)
-        # ... and delete it.
-        auction.delete()
-        # Return a 204 ("no content")
-        response = HttpResponse()
-        response.status_code = 204
-        return response
-
-    def get(self, *args, **kwargs):
-        return HttpResponse("This is Get Method")
-
-    def put(self, *args, **kwargs):
-        print(self.request.body)
-        return HttpResponse("This is PUT Method")
