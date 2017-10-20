@@ -224,7 +224,7 @@ def savepid(request,offset):
                 a_pid_value = cleandata["pid"]
 
 
-                if a_pid_value > 0.01+Decimal(latest_pid):
+                if a_pid_value < Decimal(latest_pid):
                     messages.add_message(request, messages.ERROR, "Pid value must be at least 0.01€ higher than previous pid.")
                     return render(request, 'pid.html', {'form': form, 'auction': auction})
 
