@@ -1,6 +1,8 @@
 
 from decimal import Decimal
 
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, request
 from django.contrib.auth.decorators import login_required
@@ -10,7 +12,7 @@ from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from _datetime import datetime, timedelta
-from YAAS_App.forms import CreateAuction, ConfirmAuction, RegistrationForm, AddPid, ConfirmBan
+from YAAS_App.forms import CreateAuction, ConfirmAuction, RegistrationForm, AddPid, ConfirmBan, EditUserDataForm
 from YAAS_App.models import User, Auction, Pid
 from django.contrib import messages
 from django.core.mail import send_mail, EmailMessage
@@ -57,7 +59,7 @@ class AddAuction(View):
             latest_pid=start_price #cleandata['latest_pid']
             print(latest_pid)
             endtime=cleandata['endtime']
-            status=cleandata['auction_status']
+            auction_status=cleandata['auction_status']
 
             form=ConfirmAuction()
             endingdate = endtime.strftime('%Y-%m-%d %H:%M') # from datetime to string
@@ -65,7 +67,7 @@ class AddAuction(View):
             return render(request, 'confirmauction.html',
                           {'form':form,'seller':seller,'title':title,'description':description,
                            'start_price':start_price,'latest_pid':latest_pid,'endtime':endingdate,
-                           'status':status})
+                           'auction_status':auction_status})
         else:
             messages.add_message(request,messages.ERROR,"Data in form is not valid")
             return render(request,'createauction.html',{'form':form})
@@ -88,8 +90,9 @@ def saveauction(request):
         auction = Auction(seller=a_seller,title =a_title, description = a_description, start_price=a_start_price,latest_pid=a_latest_pid, endtime=a_end_time)
         auction.save()
         subject='Notification from Old Junk Auctions.'
-        body='You have created new auction in Old Junk Auctions site.'
-        to=(User.objects.get(id=2)).email
+        body='You have created a new auction in Old Junk Auctions site.'
+
+        to=request.user.email
         sendEmail(subject,body,to)
         return HttpResponseRedirect(reverse("home"))  #reverse(
     else:
@@ -303,8 +306,38 @@ def ban(request,offset):
 
         return HttpResponseRedirect(reverse("home"))
 
+@login_required()
+def edituser(request):
+    if not request.user.is_authenticated():
+        messages.add_message(request, messages.ERROR, "You must login before you are edit your data")
+        return HttpResponseRedirect('/login/?next=%s')
+    else:
+        if request.method=="GET":
+            user=request.user
+            email=request.user.email
+            pword=request.user.password
+            data={'pword':pword,'email':email}
+            form=EditUserDataForm(data,initial=data)#EditUserDataForm
 
 
+            return render(request,'edituserdata.html',{'form':form}) #,{'old_email':email}
+
+        else:
+            form=EditUserDataForm(data=request.POST,user=request.user)
+            if(form.is_valid()):
+                cleandata = form.cleaned_data
+                # passwrd1 = cleandata["password1"]
+                # passwrd2 = cleandata["password2"]
+                email = cleandata["email"]
+                print(email)
+                request.user.email=email
+                form.save()
+                update_session_auth_hash(request, form.user )
+                messages.add_message(request, messages.INFO, "You data has bee saved")
+            else:
+                print("gf")
+
+            return redirect('home')
 
 
 

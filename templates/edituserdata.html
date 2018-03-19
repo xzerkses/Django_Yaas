@@ -1,0 +1,20 @@
+{% extends "base2.html" %}
+<h2>Edit User Data</h2>
+
+{% block content %}
+<p><b>Edit User Data</b></p>
+  {% if error%}
+  <p> <b>{{ error }}</b> </p>
+  {% endif %}
+
+    <form action="/edituser/" method="post">
+        {% csrf_token %}
+        {{ form }}
+
+
+
+
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}

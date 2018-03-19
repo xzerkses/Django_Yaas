@@ -1,7 +1,7 @@
 from datetime import datetime,timedelta
 
 from django.conf import settings
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 #from YAAS_App.myvalidators import validate_endtime
@@ -48,7 +48,6 @@ class CreateAuction(forms.Form):
 class AddPid(forms.Form):
     pid=forms.DecimalField(required=True,max_digits=6,decimal_places=2,validators=[])
 
-
 class ConfirmAuction(forms.Form):
     CHOICES = [(x, x) for x in ("Yes", "No")]
     option = forms.ChoiceField(choices=CHOICES, required=True,initial='Yes')
@@ -64,6 +63,12 @@ class RegistrationForm(UserCreationForm):
     class Meta:
         model=User
         fields =('username','email','password1','password2')
+
+class EditUserDataForm(PasswordChangeForm):
+    email=forms.EmailField(label='Email',max_length=200)
+    class Meta:
+        model=User
+        fields=('password1','password2','email')
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

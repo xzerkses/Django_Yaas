@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL="/"
 LOGOUT_REDIRECT_URL="/"
 LOGIN_URL='/login/'
+
+FIXTURE_DIRS=('fixtures',)
 # Application definition
 #EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 #EMAIL_FILE_PATH='/tmp/django_email_dev'
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_cron',
     'YAAS_App',
+    'django_nose',
 
 ]
 
@@ -138,18 +141,25 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Nose is used to run all tests
+#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 
+# Tell nose to measure coverage on the YAAS_App apps
+NOSE_ARGS = [
+    #'--with-coverage',
+    #'--cover-package=YAAS_App',
+]
 
 CRON_CLASSES = [
     "YAAS_App.cronjobs.CronJob",
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.TokenAuthentication',
-#     ),
-#     # 'DEFAULT_PERMISSION_CLASSES': (
-#     #     'rest_framework.permissions.IsAuthenticated',
-#     # )
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+         'rest_framework.permissions.IsAuthenticated',
+    )
+}

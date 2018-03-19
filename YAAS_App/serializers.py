@@ -6,7 +6,7 @@ from YAAS_App.models import Pid, Auction
 class PidSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pid
-        fields = ('auction_id','seller' 'pid_value','pid_datetime',)
+        fields = ('pid_value',) #'auction_id','pidder',
 
 
 class AuctionSerializer(serializers.ModelSerializer):
