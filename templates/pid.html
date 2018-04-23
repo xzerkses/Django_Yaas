@@ -1,7 +1,7 @@
 {% extends 'base2.html' %}
-
+{% load i18n %}
 {% block content %}
-<p><b>Place a Pid</b></p>
+<p><b>{% trans 'Place a Pid'%}</b></p>
   {% if error%}
   <p> <b>{{ error }}</b> </p>
     {% endif %}
@@ -9,11 +9,11 @@
 
     <form action="/savepid/{{ auction.id }} {{ pid.id }}" method="post">
         {% csrf_token %}
-        <label> <b>Title:</b> {{ auction.title }}</label><br>
-        <label> <b>Description:</b> {{ auction.description }}</label><br>
-        <label> <b>Auction Status:</b> {{ auction.auction_status }}</label><br>
-        <label> <b>Starting pid:</b> {{ auction.start_price }}</label><br>
-        <label> <b>Latest Pid:</b> {{ auction.latest_pid }}</label><br>
+        <label> <b>{% trans 'Title:'%}</b> {{ auction.title }}</label><br>
+        <label> <b>{% trans 'Description:'%}</b> {{ auction.description }}</label><br>
+        <label> <b>{% trans 'Auction Status:'%}</b> {{ auction.auction_status }}</label><br>
+        <label> <b>{% trans 'Starting pid:'%}</b> {{ auction.start_price }}</label><br>
+        <label> <b>{% trans 'Latest Pid:'%}</b> {{ auction.latest_pid }}</label><br>
 
 
         {{ form.as_p }}
@@ -24,7 +24,7 @@
         <INPUT TYPE=HIDDEN NAME="endtime" VALUE="{{ endtime }}">
         <input type="submit" value="Submit">
     </form>
-    <a href="/">Home</a>
+    <a href="/">{% trans 'Home'%}</a>
 {% endblock %}
 
 

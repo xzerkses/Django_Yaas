@@ -1,5 +1,5 @@
 {% extends "base2.html" %}
-
+{% load i18n %}
 {% block content %}
 
 <p><b>{{ error }}</b></p>
@@ -11,7 +11,7 @@
         {% csrf_token %}
         {{ form.as_p }}
 
-        <button type="submit">Submit</button>
+        <button type="submit">{% trans 'Submit' %}</button>
 
     </form>
 

@@ -42,7 +42,8 @@ urlpatterns = [
     url(r'^edituser/$', edituser),
     #url(r'^api/auctions/(?P<pk>\d+)/pid/(\d+)$', TokenAuthAddPid.as_view()),
     url(r'^api/auctions/(?P<pk>\d+)/$', TokenAuthAddPid.as_view()),
-
+    url(r'^setlang/$', set_lang),
+    url(r'^returnhome/(\d*)$', clearhome),
 ]
 
 urlpatterns=format_suffix_patterns(urlpatterns)

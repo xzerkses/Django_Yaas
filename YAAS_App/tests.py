@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth.models import User, AnonymousUser
 from django.core import mail
 from django.test import TestCase, RequestFactory
-
+from django.test import Client
 from YAAS_App.models import Auction, Pid
 from YAAS_App.views import saveauction
 
@@ -130,3 +130,73 @@ class PidTestCases(TestCase):
     # TYPE = HIDDEN
     # NAME = "endtime"
     # VALUE = "{{ endtime }}" >
+
+class ConcurrencyTestCases(TestCase):
+    auction_count=0
+    auction_count_new=0
+    fixtures = ['db_data.json']
+
+    @classmethod
+    def setUp(cls):
+        print("Concurrency Test init: START***********************************************************************************")
+        cls.auction_count = Auction.objects.count()
+        cls.user =User.objects.create_user(username='alf', email='alf@trader.fi', password='alf123')
+        cls.auction = Auction.objects.create(seller=cls.user, title='Old Sledgehammer', auction_status='A',
+                                             description='Rusty Sledgehammer for sale', start_price=5.0, latest_pid=5.0,
+                                             endtime='2018-04-27 18:00')
+        cls.auction.save()
+        print("auction before test ", str(cls.auction_count) + ". Auction count after tests ",
+              str(Auction.objects.count()))
+
+        #response = cls.client.login(username='alf', password='alf123')
+        print("Test init: *************************************************************************************END")
+
+    def test_adding_pid(self):
+        # addinf test user
+        self.user = User.objects.create_user(username='tester', email='tester@testing.fi', password='tester123')
+
+
+        response = self.client.login(username='tester', password='tester123')
+
+
+        #auction_count = Auction.objects.count()
+        #print("auction before test ",str(self.auction_count)+". Auction count after tests ", str(Auction.objects.count()))
+        test=Auction.objects.get(title='Old Sledgehammer')
+
+        print("finding auction",test)
+        print("finding auction count", str(Auction.objects.count()))
+        response = self.client.get('/addpid/'+str(test.id))
+        print("Pid testing: ",response)
+        print("user testing: ", test.id )
+
+    def test_pid_while_in_use(self):
+        # addinf test user
+        self.tester = User.objects.create_user(username='tester', email='tester@testing.fi', password='tester123')
+
+        response = self.client.login(username='tester', password='tester123')
+        #self.client.login(username='Alf', password='alf123')
+
+        print("editauction",response)
+
+        #c = Client(HTTP_USER_AGENT='Mozilla/5.0')
+        #b = Client(HTTP_USER_AGENT='Mozilla/4.0')
+        #c.login(username='tester', password='tester123')
+        print("user: " + str(self.tester))
+        test = Auction.objects.get(title='Old Sledgehammer')
+        print("auction is locked by: ",test.title)
+        test.lockedby="himokas"
+        #response = c.get('/editauction/' + str(test.id))
+        #print("first resp:",response)
+        #b.login(username='Alf', password='alf123')
+        resp=self.client.get('/addpid/' + str(test.id))
+        print("2nd resp:", resp)
+        print("now auction is locked by: ", test.lockedby)
+        # auction_count = Auction.objects.count()
+        # print("auction before test ",str(self.auction_count)+". Auction count after tests ", str(Auction.objects.count()))
+        #test = Auction.objects.get(title='Old Sledgehammer')
+
+        #print("finding auction", test)
+        #print("finding auction count", str(Auction.objects.count()))
+        #response = self.client.get('/addpid/' + str(test.id))
+        #print("Pid testing: ", response)
+        #print("user testing: ", test.id)

@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 {% load mathfilters %}
+    {% load i18n %}
 {% for auction in auctions %}
     {% if auction.auction_status != 'B' %}
-        <h2>{{ auction.title }}</h2> <a href="/editauction/{{ auction.id }}">Edit Auction</a> <a href="/addpid/{{ auction.id }}"> Add Pidd</a>
-        {% if user.is_staff %} Ban Auction: <a href="/banview/{{ auction.id }}">Ban Auction</a>{% endif %}
-        <p><b>Seller:</b>{{ auction.seller }}<b>Title:</b>{{ auction.title }} <b>Starting Pid:</b>{{ auction.start_price|mul:rate }} <b>Latest Pid:</b>{{ auction.latest_pid|mul:rate}} </p>
-        <p><b>Auction ends :</b> {{ auction.endtime }}</p>
-        <p><b>Item description:</b>{{ auction.description }}</p>
+        <h2>{{ auction.title }}</h2> <a href="/editauction/{{ auction.id }}">{% trans 'Edit Auction'%}</a> <a href="/addpid/{{ auction.id }}"> {% trans 'Add Pid'%}</a>
+        {% if user.is_staff %} {% trans 'Ban Auction:'%} <a href="/banview/{{ auction.id }}">{% trans 'Ban Auction'%}</a>{% endif %}
+        <p><b>{% trans 'Seller:'%}</b>{{ auction.seller }}<b>{% trans 'Title:'%}</b>{{ auction.title }} <b>{% trans 'Starting Pid:'%}</b>{{ auction.start_price|mul:rate }} <b>{% trans 'Latest Pid:'%}</b>{{ auction.latest_pid|mul:rate}} </p>
+        <p><b>{% trans 'Auction ends:'%}</b> {{ auction.endtime }}</p>
+        <p><b>{% trans 'Item description:'%}</b>{{ auction.description }}</p>
 
     {% endif %}
 {% empty %}
-    <p>No Auctions Available<p>
+    <p>{% trans 'No Auctions Available'%}<p>
 {%  endfor %}
 {% endblock %}

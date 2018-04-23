@@ -1,0 +1,301 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-01 07:51+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\YAAS\settings.py:46
+msgid "German"
+msgstr ""
+
+#: .\YAAS\settings.py:47
+msgid "English"
+msgstr ""
+
+#: .\YAAS\settings.py:48
+msgid "France"
+msgstr ""
+
+#: .\YAAS_App\views.py:31
+msgid "New User is created. Please Login."
+msgstr "Neuer Benutzer wird erstellt. Bitte loggen Sie sich ein."
+
+#: .\YAAS_App\views.py:72
+msgid "Data in form is not valid."
+msgstr "Daten im Formular sind nicht gültig."
+
+#: .\YAAS_App\views.py:92
+msgid "Notification from Old Junk Auctions."
+msgstr "Benachrichtigung von alten Junk-Auktionen."
+
+#: .\YAAS_App\views.py:93
+msgid "You have created a new auction in Old Junk Auctions site."
+msgstr ""
+"Sie haben eine neue Auktion auf der Website Old Junk Auctions erstellt."
+
+#: .\YAAS_App\views.py:132
+msgid "Auction successfully saved."
+msgstr "Die Auktion wurde erfolgreich gespeichert."
+
+#: .\YAAS_App\views.py:148
+msgid "Only seller is allowed to edit auction."
+msgstr "Nur der Verkäufer darf die Auktion bearbeiten."
+
+#: .\YAAS_App\views.py:193
+msgid "You must login before you are allowed to pid"
+msgstr "Sie müssen sich anmelden, bevor Sie Pid werden dürfen"
+
+#: .\YAAS_App\views.py:202
+msgid "Administrators are not allowed to pid"
+msgstr "Administratoren dürfen nicht pid"
+
+#: .\YAAS_App\views.py:204
+msgid "Seller is not allowed to pid"
+msgstr "Der Verkäufer darf nicht pid"
+
+#: .\YAAS_App\views.py:231
+msgid "Pid value must be at least 0.01€ higher than previous pid."
+msgstr "Der Pid-Wert muss mindestens 0,01 € höher sein als die vorherige PID."
+
+#: .\YAAS_App\views.py:239
+msgid "Piding time has ended."
+msgstr "Piding Zeit ist vorbei."
+
+#: .\YAAS_App\views.py:255
+msgid "Pid successfully saved."
+msgstr "Pid erfolgreich gespeichert."
+
+#: .\YAAS_App\views.py:257
+msgid "A new pid was placed in auction were you are involved."
+msgstr ""
+"Eine neue PID wurde in einer Auktion platziert, wenn Sie beteiligt sind."
+
+#: .\YAAS_App\views.py:258
+msgid "New pid with "
+msgstr "Neue Pid mit"
+
+#: .\YAAS_App\views.py:270
+msgid "Data in form is not valid"
+msgstr "Daten im Formular sind nicht gültig"
+
+#: .\YAAS_App\views.py:277
+msgid "You must login before you are allowed to ban"
+msgstr "Sie müssen sich anmelden, bevor Sie verbieten dürfen"
+
+#: .\YAAS_App\views.py:292
+msgid "Auction successfully banned"
+msgstr "Auktion wurde erfolgreich gesperrt"
+
+#: .\YAAS_App\views.py:294 .\YAAS_App\views.py:295
+msgid "Auction "
+msgstr "Versteigerung"
+
+#: .\YAAS_App\views.py:312
+msgid "You must login before you are edit your data"
+msgstr "Sie müssen sich anmelden, bevor Sie Ihre Daten bearbeiten"
+
+#: .\YAAS_App\views.py:336
+msgid "You data has been saved."
+msgstr "Ihre Daten wurden gespeichert."
+
+#: .\templates\auctionslist.html:7 .\templates\editauction.html:3
+#: .\templates\searchresults.html:4
+#, fuzzy
+#| msgid "Auction "
+msgid "Edit Auction"
+msgstr "Versteigerung"
+
+#: .\templates\auctionslist.html:7 .\templates\searchresults.html:4
+msgid "Add Pid"
+msgstr ""
+
+#: .\templates\auctionslist.html:8
+#, fuzzy
+#| msgid "Auction "
+msgid "Ban Auction:"
+msgstr "Versteigerung"
+
+#: .\templates\auctionslist.html:8
+#, fuzzy
+#| msgid "Auction "
+msgid "Ban Auction"
+msgstr "Versteigerung"
+
+#: .\templates\auctionslist.html:9 .\templates\searchresults.html:5
+msgid "Seller:"
+msgstr ""
+
+#: .\templates\auctionslist.html:9 .\templates\confirmauction.html:15
+#: .\templates\confirmban.html:16 .\templates\editauction.html:9
+#: .\templates\pid.html:12
+msgid "Title:"
+msgstr ""
+
+#: .\templates\auctionslist.html:9 .\templates\searchresults.html:5
+msgid "Starting Pid:"
+msgstr ""
+
+#: .\templates\auctionslist.html:9 .\templates\confirmauction.html:18
+#: .\templates\confirmban.html:20 .\templates\pid.html:16
+#: .\templates\searchresults.html:5
+msgid "Latest Pid:"
+msgstr ""
+
+#: .\templates\auctionslist.html:10
+#, fuzzy
+#| msgid "Auction "
+msgid "Auction ends:"
+msgstr "Versteigerung"
+
+#: .\templates\auctionslist.html:11 .\templates\searchresults.html:7
+msgid "Item description:"
+msgstr ""
+
+#: .\templates\auctionslist.html:15 .\templates\searchresults.html:10
+msgid "No Auctions Available"
+msgstr ""
+
+#: .\templates\base.html:12 .\templates\base2.html:12
+#, fuzzy
+#| msgid "Auction "
+msgid "Search Auction"
+msgstr "Versteigerung"
+
+#: .\templates\base.html:13 .\templates\base2.html:13 .\templates\pid.html:27
+msgid "Home"
+msgstr "Zuhause"
+
+#: .\templates\base.html:15 .\templates\base2.html:15
+#: .\templates\confirmauction.html:3 .\templates\createauction.html:3
+#: .\templates\createauction.html:6
+#, fuzzy
+#| msgid "Auction "
+msgid "Create Auction"
+msgstr "Versteigerung"
+
+#: .\templates\base.html:16 .\templates\base2.html:16
+msgid "Logout"
+msgstr "Ausloggen"
+
+#: .\templates\base.html:17 .\templates\base2.html:17
+#: .\templates\edituserdata.html:3 .\templates\edituserdata.html:6
+msgid "Edit User Data"
+msgstr "Benutzerdaten bearbeiten"
+
+#: .\templates\base.html:20 .\templates\base2.html:20
+msgid "Login"
+msgstr "Anmeldung"
+
+#: .\templates\base.html:21 .\templates\base2.html:21
+msgid "Add new user"
+msgstr "Neuen Benutzer hinzufügen"
+
+#: .\templates\base.html:24
+msgid "Selected Currency:"
+msgstr "Ausgewählte Währung:"
+
+#: .\templates\base.html:24
+msgid "Rate:"
+msgstr "Bewertung"
+
+#: .\templates\confirmauction.html:6 .\templates\confirmban.html:6
+#, fuzzy
+#| msgid "Auction "
+msgid "Confirm Auction"
+msgstr "Versteigerung"
+
+#: .\templates\confirmauction.html:14 .\templates\confirmban.html:14
+msgid "Seller ID:"
+msgstr ""
+
+#: .\templates\confirmauction.html:16 .\templates\confirmban.html:18
+#: .\templates\editauction.html:10 .\templates\pid.html:13
+msgid "Description:"
+msgstr ""
+
+#: .\templates\confirmauction.html:17 .\templates\confirmban.html:19
+msgid "Min Price:"
+msgstr ""
+
+#: .\templates\confirmauction.html:19
+msgid "Deadline:"
+msgstr ""
+
+#: .\templates\confirmban.html:3
+#, fuzzy
+#| msgid "Auction "
+msgid "Ban Selected Auction"
+msgstr "Versteigerung"
+
+#: .\templates\confirmban.html:15
+msgid "ID:"
+msgstr ""
+
+#: .\templates\confirmban.html:17 .\templates\pid.html:14
+#, fuzzy
+#| msgid "Auction "
+msgid "Auction Status:"
+msgstr "Versteigerung"
+
+#: .\templates\confirmban.html:21
+msgid "Piding ends:"
+msgstr ""
+
+#: .\templates\createauction.html:11 .\templates\searchresults.html:6
+msgid "Please give date and time in YYYY mm dd HH:MM format:"
+msgstr ""
+
+#: .\templates\editauction.html:6
+msgid "Your are editting auction:"
+msgstr ""
+
+#: .\templates\pid.html:4
+msgid "Place a Pid"
+msgstr ""
+
+#: .\templates\pid.html:15
+msgid "Starting pid:"
+msgstr ""
+
+#: .\templates\registration\login.html:14
+msgid "Submit"
+msgstr ""
+
+#: .\templates\registration\registration.html:7
+#, fuzzy
+#| msgid "Auction "
+msgid "Create an account"
+msgstr "Versteigerung"
+
+#: .\templates\searchauction.html:3
+#, fuzzy
+#| msgid "Auction "
+msgid "Search"
+msgstr "Versteigerung"
+
+#: .\templates\searchauction.html:6
+msgid "Search:"
+msgstr ""
+
+#: .\templates\searchauction.html:12
+msgid "Results for"
+msgstr ""
+
+#: .\templates\searchresults.html:6
+#, fuzzy
+#| msgid "Auction "
+msgid "Auction ends :"
+msgstr "Versteigerung"

@@ -1,23 +1,25 @@
 {% load i18n %}
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+
 <h1>Old Junk Auctions</h1>
 
     <br><br>
-    <a href="/searchauction/">Search Auction</a>
-    <a href="/">Home</a>
+    <a href="/searchauction/">{% trans 'Search Auction' %}</a>
+
+    <a href="/returnhome/{{id|default:"" }}{{ auction.id|default:"" }}">{% trans 'Home' %}</a>
     {% if user.is_authenticated %}
-        <a href="/createauction/">Create Auction</a>
-        <a href="/logout/">Logout</a>
-        <a href="/edituser/">Edit User Data</a>
+        <a href="/createauction/">{% trans 'Create Auction' %}</a>
+        <a href="/logout/">{% trans 'Logout' %}</a>
+        <a href="/edituser/">{% trans 'Edit User Data' %}</a>
 
     {% else %}
-        <a href="/login/">Login</a>
-        <a href="/createuser/">Add new user</a>
+        <a href="/login/">{% trans 'Login' %}</a>
+        <a href="/createuser/">{% trans 'Add new user' %}</a>
     {% endif %}
 
     <br>

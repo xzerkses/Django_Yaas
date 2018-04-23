@@ -1,14 +1,15 @@
 {% extends 'base2.html' %}
-{% block title %}Search{% if query %} Results{% endif %}{% endblock %}
+{% load i18n %}
+{% block title %}{% trans 'Search'%}{% if query %} {% trans 'Results'%}{% endif %}{% endblock %}
 {%  block content %}
     <form id="search_form" method="GET" action=".">
-        <label for="query">Search:</label>
+        <label for="query">{% trans 'Search:'%}</label>
         <input type="text" name="query" value="{{ input|escape }}">
         <input type="submit" value="Search">
     </form>
 
     {% if input %}
-     <h2>Results for "{{ input|escape }}":</h2>
+     <h2>{% trans 'Results for'%} "{{ input|escape }}":</h2>
         {% include "searchresults.html" %}
     {% endif %}
 

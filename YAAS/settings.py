@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+_ = lambda s: s  #dummy import for language import
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -30,18 +30,25 @@ LOGIN_REDIRECT_URL="/"
 LOGOUT_REDIRECT_URL="/"
 LOGIN_URL='/login/'
 
-FIXTURE_DIRS=('fixtures',)
+FIXTURE_DIRS = ('fixtures',)
+LOCALE_PATHS = ('locale',)
 # Application definition
 #EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 #EMAIL_FILE_PATH='/tmp/django_email_dev'
 #SITE_HOST = '127.0.0.1:8000'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    #'django.core.mail.backends.smtp.EmailBackend'
+
 #EMAIL_HOST = 'smtp.gmail.com'
 #EMAIL_HOST_USER = 'mkkvjk7@gmail.com'
 #EMAIL_HOST_PASSWORD = ''
 #EMAIL_PORT = 587
 #EMAIL_USE_TLS = True
-
+LANGUAGES = (
+ ('de', _('German')),
+ ('en', _('English')),
+ ('fr', _('France')),
+)
 
 INSTALLED_APPS = [
     #"'send_email.apps.SendEmailConfig',
@@ -63,6 +70,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -84,6 +92,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -125,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 

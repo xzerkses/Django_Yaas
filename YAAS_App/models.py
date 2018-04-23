@@ -30,6 +30,7 @@ class Auction(models.Model):
     start_price=models.DecimalField(max_digits=6,decimal_places=2)
     latest_pid=models.DecimalField(max_digits=6,decimal_places=2)
     endtime=models.DateTimeField()
+    lockedby=models.TextField(default="")
 
         #pidstatus
     def __str__(self):

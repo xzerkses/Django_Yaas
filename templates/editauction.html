@@ -1,13 +1,13 @@
 {% extends "base2.html" %}
-
-{% block title %}Edit Auction{% endblock %}
+{% load i18n %}
+{% block title %}{% trans 'Edit Auction'%}{% endblock %}
 {% block content %}
 
-<p><b>Your are editting auction:{{ title }}</b></p>
+<p><b>{% trans 'Your are editting auction:'%}{{ title }}</b></p>
     <form action="/savechanges/{{id }}/" method="post">
         {% csrf_token %}
-        <p>Title:<input type="text" name="title" id="title" value="{{ title }}" readonly></p>
-        <p>Description: <textarea name="description" cols="40" rows="20">{{ description }}</textarea> </p>
+        <p>{% trans 'Title:'%}<input type="text" name="title" id="title" value="{{ title }}" readonly></p>
+        <p>{% trans 'Description:'%} <textarea name="description" cols="40" rows="20">{{ description }}</textarea> </p>
         <input type="submit" value="Save Changes">
     </form>
     {% if query %}

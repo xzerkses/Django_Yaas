@@ -1,9 +1,9 @@
 {%  extends "base2.html" %}
-
-<h2> Ban Selected Auction</h2>
+{% load i18n %}
+<h2> {% trans 'Ban Selected Auction'%}</h2>
 {% block content %}
 
-<p><b>Confirm Auction</b></p>
+<p><b>{% trans 'Confirm Auction'%}</b></p>
 {% if error %}
     {{ error }}
 {% endif %}
@@ -11,18 +11,18 @@
 <b>{{ title }}</b>
     <form action="/banauction/{{ auction.id }}" method="post">
         {% csrf_token %}
-        <label> <b>Seller ID:</b> {{ auction.seller }}</label><br>
-        <label> <b>ID:</b> {{ auction.id }}</label><br>
-        <label> <b>Title:</b> {{ auction.title }}</label><br>
-        <label> <b>Auction Status:</b> {{ auction.auction_status }}</label><br>
-        <label> <b>Description:</b> {{ auction.description }}</label><br>
-        <label> <b>Min Price:</b> {{ auction.start_price }}</label><br>
-        <label> <b>Latest Pid:</b> {{ auction.latest_pid }}</label><br>
-        <label> <b>Piding ends:</b> {{ auction.endtime }}</label><br>
+        <label> <b>{% trans 'Seller ID:'%}</b> {{ auction.seller }}</label><br>
+        <label> <b>{% trans 'ID:'%}</b> {{ auction.id }}</label><br>
+        <label> <b>{% trans 'Title:'%}</b> {{ auction.title }}</label><br>
+        <label> <b>{% trans 'Auction Status:'%}</b> {{ auction.auction_status }}</label><br>
+        <label> <b>{% trans 'Description:'%}</b> {{ auction.description }}</label><br>
+        <label> <b>{% trans 'Min Price:'%}</b> {{ auction.start_price }}</label><br>
+        <label> <b>{% trans 'Latest Pid:'%}</b> {{ auction.latest_pid }}</label><br>
+        <label> <b>{% trans 'Piding ends:'%}</b> {{ auction.endtime }}</label><br>
         <br>
 
-        <p><input type="radio" name="option" value="Yes">Yes</p>
-        <p><input type="radio" name="option" value="No">No</p>
+        <p><input type="radio" name="option" value="Yes">{% trans 'Yes'%}</p>
+        <p><input type="radio" name="option" value="No">{% trans 'No'%}</p>
         <INPUT TYPE=HIDDEN NAME="seller" VALUE="{{ auction.seller }}">
         <INPUT TYPE=HIDDEN NAME="title" VALUE="{{ auction.title }}">
         <INPUT TYPE=HIDDEN NAME="auction_status" VALUE="{{ auction.auction_status }}">
