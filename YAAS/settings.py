@@ -33,17 +33,8 @@ LOGIN_URL='/login/'
 FIXTURE_DIRS = ('fixtures',)
 LOCALE_PATHS = ('locale',)
 # Application definition
-#EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
-#EMAIL_FILE_PATH='/tmp/django_email_dev'
-#SITE_HOST = '127.0.0.1:8000'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    #'django.core.mail.backends.smtp.EmailBackend'
 
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST_USER = 'mkkvjk7@gmail.com'
-#EMAIL_HOST_PASSWORD = ''
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
 LANGUAGES = (
  ('de', _('German')),
  ('en', _('English')),
@@ -59,8 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework.authtoken',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_cron',
     'YAAS_App',
     'django_nose',
@@ -169,6 +160,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-         'rest_framework.permissions.IsAuthenticated',
+         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     )
 }

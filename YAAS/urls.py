@@ -38,10 +38,8 @@ urlpatterns = [
     url(r'^banview/(\d+)$', banview),
     url(r'^banauction/(\d+)$', ban),
     url(r'^api/auctions/$', AuctionList.as_view()),
-    #url(r'^api/auctions/(?P<pk>\d+)/$', AuctionSearch.as_view()),
+    url(r'^api/auctions/(?P<pk>\d+)/$', AuctionSearchAndPid.as_view()), #AuctionSearch.as_view()),
     url(r'^edituser/$', edituser),
-    #url(r'^api/auctions/(?P<pk>\d+)/pid/(\d+)$', TokenAuthAddPid.as_view()),
-    url(r'^api/auctions/(?P<pk>\d+)/$', TokenAuthAddPid.as_view()),
     url(r'^setlang/$', set_lang),
     url(r'^returnhome/(\d*)$', clearhome),
 ]

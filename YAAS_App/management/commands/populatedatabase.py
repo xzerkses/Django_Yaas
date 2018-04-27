@@ -73,9 +73,3 @@ class Command(BaseCommand):
             pidder = User.objects.order_by('username')[random.randint(0,pidder_cnt-1)]
             print("User ",pidder.username," adds a pid to auction ",auction.title)
             Pid.objects.create(auction_id=auction, pidder=pidder, pid_value=auction.latest_pid+random.randint(1,10),pid_datetime=datetime.datetime.now()+datetime.timedelta(hours=random.randint(1,7)))
-
-
-            # auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
-            # pidder = models.ForeignKey(User)
-            # pid_value = models.DecimalField(max_digits=6, decimal_places=2)
-            # pid_datetime = models.DateTimeField()

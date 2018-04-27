@@ -60,8 +60,8 @@ class AddAuction(View):
             title=cleandata['title']
             description=cleandata['description']
             start_price=cleandata['start_price']
-            print(start_price)
-            latest_pid=start_price #cleandata['latest_pid']
+            #print(start_price)
+            latest_pid=start_price
             print(latest_pid)
             endtime=cleandata['endtime']
             auction_status=cleandata['auction_status']
@@ -130,11 +130,9 @@ def browseauctions(request):
     rates = data['rates']
     lang_type=request.session[translation.LANGUAGE_SESSION_KEY]
     for key, value in languages.items():
-        print( "value=",value)
         if value == lang_type:
-            print("key=", key)
             language=key
-    print("language for list=", language)
+
     return render(request, "auctionslist.html", {'auctions':auctions,'rates':rates,'currency':currency,'rate':rate,'languages':languages,'language':language })
 
 def savechanges(request,offset):
@@ -151,7 +149,7 @@ def savechanges(request,offset):
         auction.title=title
         auction.description=description
         auction.lockedby=""
-        print("edited auction savad: ",auction.lockedby)
+        #print("edited auction savad: ",auction.lockedby)
         auction.save()
         messages.add_message(request,messages.INFO,_("Auction successfully saved."))
         return HttpResponseRedirect(reverse("home"))
@@ -164,12 +162,12 @@ def editauction(request,offset):
     else:
         auction=get_object_or_404(Auction, id=offset)
         if request.user==auction.seller:
-            print("auction lockedby: ",auction.lockedby)
+            #print("auction lockedby: ",auction.lockedby)
             if auction.lockedby!="" and auction.lockedby!=request.session._get_or_create_session_key():
                 messages.add_message(request, messages.ERROR, _("Auction is currently used by another user. You can try to edit auction later."))
                 return HttpResponseRedirect(reverse("home"))
             auction.lockedby=request.session._get_or_create_session_key()
-            print("auction locked for edit by: ",auction.lockedby)
+            #print("auction locked for edit by: ",auction.lockedby)
             auction.save()
             return render(request,"editauction.html",{'seller':request.user,'title':auction.title,
                                                       'description':auction.description,
@@ -179,14 +177,12 @@ def editauction(request,offset):
             messages.add_message(request, messages.ERROR, _("Only seller is allowed to edit auction."))
             return HttpResponseRedirect(reverse("home"))
 def search(request):
-    #form=Searchingform()
+
     input=request.GET.get('query','')
     if input:
         input=input.strip()
-        print(input)
-        #form = Searchingform({'input':input})
         auctions=Auction.objects.filter(title__contains=input)[:10]
-        print(auctions)
+
     else:
         auctions=[]
 
@@ -364,8 +360,7 @@ def edituser(request):
             form=EditUserDataForm(data=request.POST,user=request.user)
             if form.is_valid():
                 cleandata = form.cleaned_data
-                # passwrd1 = cleandata["password1"]
-                # passwrd2 = cleandata["password2"]
+
                 email = cleandata["email"]
                 print(email)
                 request.user.email=email

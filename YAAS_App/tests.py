@@ -6,7 +6,7 @@ from django.test import TestCase, RequestFactory
 from django.test import Client
 from YAAS_App.models import Auction, Pid
 from YAAS_App.views import saveauction
-
+from _datetime import datetime
 
 class AuctionTestCases(TestCase):
     fixtures = ['db_data.json']
@@ -93,43 +93,43 @@ class PidTestCases(TestCase):
     fixtures = ['db_data.json']
     def setUp(self):
         # Every test needs access to the request factory.
-        self.user = self.user = User.objects.create_user(username='alf',email='alf@trader.fi', password='alf123')
+        self.user = User.objects.create_user(username='alf',email='alf@trader.fi', password='alf123')
+        self.seller = User.objects.create_user(username='seller',email='seller@trader.fi', password='sel567')
         #login user in
+
+        self.auction = Auction.objects.create(seller=self.seller, title='Old Sledgehammer', auction_status='A',
+                                             description='Rusty Sledgehammer for sale', start_price=5.0, latest_pid=5.0,
+                                             endtime='2018-05-30 18:00')
+        self.auction.save()
         response = self.client.login(username='alf', password='alf123')
 
-    def test_addpid(self):
-        self.client.post('/savepid/',{})
 
-    # < label > < b > Title: < / b > {{auction.title}} < / label > < br >
-    # < label > < b > Description: < / b > {{auction.description}} < / label > < br >
-    # < label > < b > Auction
-    # Status: < / b > {{auction.auction_status}} < / label > < br >
-    # < label > < b > Starting
-    # pid: < / b > {{auction.start_price}} < / label > < br >
-    # < label > < b > Latest
-    # Pid: < / b > {{auction.latest_pid}} < / label > < br >
+    def test_addpid(self):
+        pid_value=self.auction.latest_pid+0.1
+        print("test_addpid: auction: ",self.auction)
+        print("pid count before",Pid.objects.count())
+        print("pid_value: ", pid_value)
+        print("user: ",self.user)
+        response=self.client.post('/savepid/',{'pidder':self.user,'auction_id':self.auction,'pid_value':pid_value,'pid_datetime':datetime.now()})
+        #pid = Pid(pidder=a_pidder,auction_id=auction, pid_value=a_pid_value,pid_datetime=a_pid_datetime)
+        print("pid count after", Pid.objects.count())
+        print("test_addpid: savepid response: ", response)
+    # <form action="/savepid/{{ auction.id }} {{ pid.id }}" method="post">
+    #     {% csrf_token %}
+    #     <label> <b>{% trans 'Title:'%}</b> {{ auction.title }}</label><br>
+    #     <label> <b>{% trans 'Description:'%}</b> {{ auction.description }}</label><br>
+    #     <label> <b>{% trans 'Auction Status:'%}</b> {{ auction.auction_status }}</label><br>
+    #     <label> <b>{% trans 'Starting pid:'%}</b> {{ auction.start_price }}</label><br>
+    #     <label> <b>{% trans 'Latest Pid:'%}</b> {{ auction.latest_pid }}</label><br>
     #
-    # {{form.as_p}}
-    # < INPUT
-    # TYPE = HIDDEN
-    # NAME = "auction_id"
-    # VALUE = "{{auction.id}}" >
-    # < INPUT
-    # TYPE = HIDDEN
-    # NAME = "latest_pid"
-    # VALUE = "{{ auction.latest_pid }}" >
-    # < INPUT
-    # TYPE = HIDDEN
-    # NAME = "description"
-    # VALUE = "{{ description }}" >
-    # < INPUT
-    # TYPE = HIDDEN
-    # NAME = "start_price"
-    # VALUE = "{{ start_price }}" >
-    # < INPUT
-    # TYPE = HIDDEN
-    # NAME = "endtime"
-    # VALUE = "{{ endtime }}" >
+    #
+    #     {{ form.as_p }}
+    #     <INPUT TYPE=HIDDEN NAME="auction_id" VALUE="{{auction.id}}">
+    #     <INPUT TYPE=HIDDEN NAME="latest_pid" VALUE="{{ auction.latest_pid }}">
+    #     <INPUT TYPE=HIDDEN NAME="description" VALUE="{{ description }}">
+    #     <INPUT TYPE=HIDDEN NAME="start_price" VALUE="{{ start_price }}">
+    #     <INPUT TYPE=HIDDEN NAME="endtime" VALUE="{{ endtime }}">
+    #     <input type="submit" value="Submit">
 
 class ConcurrencyTestCases(TestCase):
     auction_count=0
