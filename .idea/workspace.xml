@@ -2,39 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a03c1ac7-67a2-4594-80f4-44b3b2c56596" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/fixtures/db_data.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/fixtures/db_populate.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/~WRL2680.tmp" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/templates/pid.html" afterPath="$PROJECT_DIR$/templates/bid.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS.docx" afterPath="$PROJECT_DIR$/YAAS.docx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locale/'de'/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/locale/'de'/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locale/'fr'/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/locale/'fr'/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locale/de/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/locale/de/LC_MESSAGES/django.mo" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.coverage" afterPath="$PROJECT_DIR$/.coverage" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS/settings.py" afterPath="$PROJECT_DIR$/YAAS/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS/urls.py" afterPath="$PROJECT_DIR$/YAAS/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/RestfulAPI.py" afterPath="$PROJECT_DIR$/YAAS_App/RestfulAPI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/admin.py" afterPath="$PROJECT_DIR$/YAAS_App/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/cronjobs.py" afterPath="$PROJECT_DIR$/YAAS_App/cronjobs.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/forms.py" afterPath="$PROJECT_DIR$/YAAS_App/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/management/commands/populatedatabase.py" afterPath="$PROJECT_DIR$/YAAS_App/management/commands/populatedatabase.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/management/commands/resolveauctions.py" afterPath="$PROJECT_DIR$/YAAS_App/management/commands/resolveauctions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/models.py" afterPath="$PROJECT_DIR$/YAAS_App/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/serializers.py" afterPath="$PROJECT_DIR$/YAAS_App/serializers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/tests.py" afterPath="$PROJECT_DIR$/YAAS_App/tests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YAAS_App/views.py" afterPath="$PROJECT_DIR$/YAAS_App/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locale/'de'/LC_MESSAGES/django.po" afterPath="$PROJECT_DIR$/locale/'de'/LC_MESSAGES/django.po" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locale/'fr'/LC_MESSAGES/django.po" afterPath="$PROJECT_DIR$/locale/'fr'/LC_MESSAGES/django.po" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locale/de/LC_MESSAGES/django.po" afterPath="$PROJECT_DIR$/locale/de/LC_MESSAGES/django.po" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/auctionslist.html" afterPath="$PROJECT_DIR$/templates/auctionslist.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="$PROJECT_DIR$/templates/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/confirmauction.html" afterPath="$PROJECT_DIR$/templates/confirmauction.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/confirmban.html" afterPath="$PROJECT_DIR$/templates/confirmban.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/searchresults.html" afterPath="$PROJECT_DIR$/templates/searchresults.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -52,7 +21,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/YAAS_App/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-53">
@@ -60,6 +29,16 @@
               <folding>
                 <element signature="e#1#28#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="requirement.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/requirement.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -89,7 +68,7 @@
       <file leaf-file-name="db_data.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fixtures/db_data.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="-3247">
               <caret line="0" column="19758" lean-forward="false" selection-start-line="0" selection-start-column="19755" selection-end-line="0" selection-end-column="19758" />
               <folding />
             </state>
@@ -100,7 +79,7 @@
         <entry file="file://$PROJECT_DIR$/YAAS_App/management/commands/populatedatabase.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="36" column="88" lean-forward="true" selection-start-line="36" selection-start-column="88" selection-end-line="36" selection-end-column="93" />
+              <caret line="36" column="88" lean-forward="false" selection-start-line="36" selection-start-column="88" selection-end-line="36" selection-end-column="93" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -152,16 +131,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/YAAS/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="37" column="30" lean-forward="false" selection-start-line="37" selection-start-column="30" selection-end-line="37" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -174,7 +143,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Welcome</find>
       <find>save</find>
       <find>edituse</find>
       <find>saveauction</find>
@@ -204,6 +172,7 @@
       <find>addB</find>
       <find>ba</find>
       <find>editA</find>
+      <find>saveac</find>
     </findStrings>
     <replaceStrings>
       <replace>bid</replace>
@@ -278,8 +247,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="946" />
-    <option name="width" value="427" />
+    <option name="x" value="595" />
+    <option name="width" value="778" />
     <option name="height" value="775" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -509,10 +478,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="946" y="0" width="427" height="775" extended-state="0" />
+    <frame x="595" y="0" width="778" height="775" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5060827" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27296588" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23007518" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -578,13 +547,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -891,7 +853,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fixtures/db_data.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="-3247">
           <caret line="0" column="19758" lean-forward="false" selection-start-line="0" selection-start-column="19755" selection-end-line="0" selection-end-column="19758" />
           <folding />
         </state>
@@ -900,7 +862,7 @@
     <entry file="file://$PROJECT_DIR$/YAAS_App/management/commands/populatedatabase.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="36" column="88" lean-forward="true" selection-start-line="36" selection-start-column="88" selection-end-line="36" selection-end-column="93" />
+          <caret line="36" column="88" lean-forward="false" selection-start-line="36" selection-start-column="88" selection-end-line="36" selection-end-column="93" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -924,6 +886,14 @@
           <folding>
             <element signature="e#1#28#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirement.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
