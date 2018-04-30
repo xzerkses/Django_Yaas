@@ -120,7 +120,7 @@ msgstr "Versteigerung"
 
 #: .\templates\auctionslist.html:7 .\templates\searchresults.html:4
 msgid "Add Pid"
-msgstr ""
+msgstr "pid hinzufügen"
 
 #: .\templates\auctionslist.html:8
 #, fuzzy
@@ -136,23 +136,23 @@ msgstr "Versteigerung"
 
 #: .\templates\auctionslist.html:9 .\templates\searchresults.html:5
 msgid "Seller:"
-msgstr ""
+msgstr "Verkäufer"
 
 #: .\templates\auctionslist.html:9 .\templates\confirmauction.html:15
 #: .\templates\confirmban.html:16 .\templates\editauction.html:9
 #: .\templates\pid.html:12
 msgid "Title:"
-msgstr ""
+msgstr "Titel"
 
 #: .\templates\auctionslist.html:9 .\templates\searchresults.html:5
 msgid "Starting Pid:"
-msgstr ""
+msgstr "Das Starten Pid"
 
 #: .\templates\auctionslist.html:9 .\templates\confirmauction.html:18
 #: .\templates\confirmban.html:20 .\templates\pid.html:16
 #: .\templates\searchresults.html:5
 msgid "Latest Pid:"
-msgstr ""
+msgstr "Letzter Pid"
 
 #: .\templates\auctionslist.html:10
 #, fuzzy
@@ -162,11 +162,11 @@ msgstr "Versteigerung"
 
 #: .\templates\auctionslist.html:11 .\templates\searchresults.html:7
 msgid "Item description:"
-msgstr ""
+msgstr "Artikel-Beschreibung"
 
 #: .\templates\auctionslist.html:15 .\templates\searchresults.html:10
 msgid "No Auctions Available"
-msgstr ""
+msgstr "Keine Verfügbaren Versteigerungen"
 
 #: .\templates\base.html:12 .\templates\base2.html:12
 #, fuzzy
@@ -219,12 +219,12 @@ msgstr "Versteigerung"
 
 #: .\templates\confirmauction.html:14 .\templates\confirmban.html:14
 msgid "Seller ID:"
-msgstr ""
+msgstr "Verkäufer-Personalausweis"
 
 #: .\templates\confirmauction.html:16 .\templates\confirmban.html:18
 #: .\templates\editauction.html:10 .\templates\pid.html:13
 msgid "Description:"
-msgstr ""
+msgstr "Beschreibung"
 
 #: .\templates\confirmauction.html:17 .\templates\confirmban.html:19
 msgid "Min Price:"
@@ -256,7 +256,7 @@ msgstr ""
 
 #: .\templates\createauction.html:11 .\templates\searchresults.html:6
 msgid "Please give date and time in YYYY mm dd HH:MM format:"
-msgstr ""
+msgstr "Geben Sie bitte Datum und Zeit mit dem YYYY Mm dd HH:MM Format"
 
 #: .\templates\editauction.html:6
 msgid "Your are editting auction:"
@@ -264,15 +264,15 @@ msgstr ""
 
 #: .\templates\pid.html:4
 msgid "Place a Pid"
-msgstr ""
+msgstr "Legen Sie einen Pid"
 
 #: .\templates\pid.html:15
 msgid "Starting pid:"
-msgstr ""
+msgstr "Das Starten pid"
 
 #: .\templates\registration\login.html:14
 msgid "Submit"
-msgstr ""
+msgstr "Gehorchen"
 
 #: .\templates\registration\registration.html:7
 #, fuzzy

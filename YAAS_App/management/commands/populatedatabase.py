@@ -4,7 +4,7 @@ import string
 
 from django.core.management import BaseCommand
 
-from YAAS_App.models import Pid, Auction,User
+from YAAS_App.models import Auction, User, Bid
 
 
 class Command(BaseCommand):
@@ -21,7 +21,7 @@ class Command(BaseCommand):
 
         self.create_users(50)
         self.create_auctions(50)
-        self.create_pids()
+        self.create_bids()
 
     def create_users(self, count):
         for i in range(count):
@@ -32,6 +32,9 @@ class Command(BaseCommand):
             passwrd = self.psswrd_generator(8)
             print("Adding a user named ", new_user )
             User.objects.create_user(username=new_user, email=new_email, password=passwrd)
+
+        User.objects.create_user(username='alf', email='alf@trader.fi', password='alf123')
+        User.objects.create_user(username='seller', email='seller@trader.fi', password='sel56')
 
     def generate_username(self):
         user=self.usernames[random.randint(0, len(self.usernames) - 1)]
@@ -61,15 +64,18 @@ class Command(BaseCommand):
             ending_time = (datetime.datetime.now()+datetime.timedelta(hours=75)).strftime('%Y-%m-%d %H:%M')
             print("User ", seller.username, " adds a auction for item ",item )
             Auction.objects.create(seller=seller, title='Selling a '+item, description='Old '+ item+' in good condition.', start_price=str_price,
-                    latest_pid=str_price, auction_status='A', endtime=ending_time)
+                    latest_bid=str_price, auction_status='A', endtime=ending_time)
 
-    def create_pids(self):
+
+
+
+    def create_bids(self):
         auction_cnt=Auction.objects.count()
-        num_of_pids=random.randint(1,10)+5
-        pidder_cnt=User.objects.count()
+        num_of_bids=random.randint(1,10)+5
+        bidder_cnt=User.objects.count()
 
-        for i in range(num_of_pids):
+        for i in range(num_of_bids):
             auction=Auction.objects.order_by('title')[random.randint(0,auction_cnt-1)]
-            pidder = User.objects.order_by('username')[random.randint(0,pidder_cnt-1)]
-            print("User ",pidder.username," adds a pid to auction ",auction.title)
-            Pid.objects.create(auction_id=auction, pidder=pidder, pid_value=auction.latest_pid+random.randint(1,10),pid_datetime=datetime.datetime.now()+datetime.timedelta(hours=random.randint(1,7)))
+            bidder = User.objects.order_by('username')[random.randint(0,bidder_cnt-1)]
+            print("User ",bidder.username," adds a bid to auction ",auction.title)
+            Bid.objects.create(auction_id=auction, bidder=bidder, bid_value=auction.latest_bid+random.randint(1,10),bid_datetime=datetime.datetime.now()+datetime.timedelta(hours=random.randint(1,7)))

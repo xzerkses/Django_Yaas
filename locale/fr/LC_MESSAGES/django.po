@@ -16,324 +16,288 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: .\YAAS\settings.py:39
 msgid "German"
-msgstr "Deutsch"
+msgstr "Allemand"
 
 #: .\YAAS\settings.py:40
 msgid "English"
-msgstr "Englisch"
+msgstr "Anglais"
 
 #: .\YAAS\settings.py:41
 msgid "France"
-msgstr "Frankreich"
+msgstr "La France"
 
 #: .\YAAS_App\views.py:36
 msgid "New User is created. Please Login."
-msgstr "Neuer Benutzer wird erstellt. Bitte loggen Sie sich ein."
+msgstr "Le Nouvel Utilisateur est créé. S'il vous plaît Ouverture de session."
 
 #: .\YAAS_App\views.py:77
 msgid "Data in form is not valid."
-msgstr "Daten im Formular sind nicht gültig."
+msgstr "Les données dans la forme ne sont pas valides."
 
 #: .\YAAS_App\views.py:98
 msgid "Notification from Old Junk Auctions."
-msgstr "Benachrichtigung von *Old Junk Auctions."
+msgstr "Notification de Vieilles Ventes aux enchères de Bazar."
 
 #: .\YAAS_App\views.py:99
 msgid "You have created a new auction in Old Junk Auctions site."
-msgstr "Sie haben eine neue Versteigerung in der Alten Trödel-Versteigerungsseite geschaffen."
+msgstr "Vous avez créé une nouvelle vente aux enchères dans le Vieux site de Ventes aux enchères de Bazar."
 
 #: .\YAAS_App\views.py:154
 msgid "Auction successfully saved."
-msgstr "Die Auktion wurde erfolgreich gespeichert."
+msgstr "Vente aux enchères avec succès sauvée."
 
 #: .\YAAS_App\views.py:167
-msgid "Auction is currently used by another user. You can try to edit auction later."
-msgstr "Versteigerung wird zurzeit von einem anderen Benutzer verwendet. Sie können versuchen, Versteigerung später zu editieren."
+msgid ""
+"Auction is currently used by another user. You can try to edit auction later."
+msgstr "La vente aux enchères est actuellement utilisée par un autre utilisateur. Vous pouvez essayer de réviser la vente aux enchères plus tard."
 
 #: .\YAAS_App\views.py:177
 msgid "Only seller is allowed to edit auction."
-msgstr "Nur der Verkäufer darf die Auktion bearbeiten."
+msgstr "Seulement on permet au vendeur de réviser la vente aux enchères."
 
 #: .\YAAS_App\views.py:221
-#, fuzzy
-#| msgid "You must login before you are allowed to pid"
 msgid "You must login before you are allowed to bid"
-msgstr "Sie müssen Anmeldung, bevor Ihnen erlaubt wird zu werben"
+msgstr "Vous devez l'ouverture de session avant que l'on vous permet de mettre une enchère"
 
 #: .\YAAS_App\views.py:233
-#, fuzzy
-#| msgid "Administrators are not allowed to pid"
 msgid "Administrators are not allowed to bid"
-msgstr "Verwaltern wird nicht erlaubt zu werben"
+msgstr "On ne permet pas aux administrateurs de mettre une enchère"
 
 #: .\YAAS_App\views.py:235
-#, fuzzy
-#| msgid "Seller is not allowed to pid"
 msgid "Seller is not allowed to bid"
-msgstr "Verkäufer wird nicht erlaubt zu werben"
+msgstr "On ne permet pas au vendeur de mettre une enchère"
 
 #: .\YAAS_App\views.py:237
 msgid ""
 "Someone else is currently accessing auction data. Try again a bit later."
-msgstr "Jemand anderer greift zurzeit auf Versteigerungsdaten zu. Versuchen Sie ein bisschen später noch einmal."
+msgstr "Quelqu'un d'autre accède actuellement aux données de vente aux enchères. Essayez de nouveau un peu plus tard."
 
 #: .\YAAS_App\views.py:266
-#, fuzzy
-#| msgid "Pid value must be at least 0.01€ higher than previous pid."
 msgid "bid value must be at least 0.01 higher than previous bid."
-msgstr "Gebot-Wert muss mindestens 0.01 höher sein als vorheriges Gebot."
+msgstr "la valeur d'offre doit être au moins 0.01 plus haut que l'offre précédente."
 
 #: .\YAAS_App\views.py:274
-#, fuzzy
-#| msgid "Piding time has ended."
 msgid "biding time has ended."
-msgstr "das Erwarten der Zeit hat geendet."
+msgstr "le fait de demeurer le temps a fini."
 
 #: .\YAAS_App\views.py:291
-#, fuzzy
-#| msgid "Pid successfully saved."
 msgid "bid successfully saved."
-msgstr "Gebot sparte erfolgreich."
+msgstr "offre avec succès sauvée."
 
 #: .\YAAS_App\views.py:293
-#, fuzzy
-#| msgid "A new pid was placed in auction were you are involved."
 msgid "A new bid was placed in auction were you are involved."
-msgstr "Ein neues Gebot wurde in die Versteigerung gelegt waren Sie werden eingeschlossen."
-
+msgstr "Une nouvelle offre a été placée à la vente aux enchères étaient vous sont impliqués."
 
 #: .\YAAS_App\views.py:294
-#, fuzzy
-#| msgid "New pid with "
 msgid "New bid with value of "
-msgstr "Neues Gebot mit dem Wert dessen"
+msgstr "La nouvelle offre avec la valeur de"
 
 #: .\YAAS_App\views.py:306
 msgid "Data in form is not valid"
-msgstr "Daten im Formular sind nicht gültig"
+msgstr "Les données dans la forme ne sont pas valides"
 
 #: .\YAAS_App\views.py:313
 msgid "You must login before you are allowed to ban"
-msgstr "Sie müssen sich anmelden, bevor Sie verbieten dürfen"
+msgstr "Vous devez l'ouverture de session avant que l'on vous permet d'interdire"
 
 #: .\YAAS_App\views.py:328
 msgid "Auction successfully banned"
-msgstr "Auktion wurde erfolgreich gesperrt"
+msgstr "Vente aux enchères avec succès interdite"
 
 #: .\YAAS_App\views.py:330 .\YAAS_App\views.py:331
 msgid "Auction "
-msgstr "die Auktion"
+msgstr "Vente aux enchères"
 
 #: .\YAAS_App\views.py:348
 msgid "You must login before you are edit your data"
-msgstr "Sie müssen sich anmelden, bevor Sie Ihre Daten bearbeiten"
+msgstr "Vous devez l'ouverture de session avant que vous êtes révisent vos données"
 
 #: .\YAAS_App\views.py:369
 msgid "You data has been saved."
-msgstr "Ihre Daten wurden gespeichert."
+msgstr "Vous les données avez été sauvés."
 
 #: .\templates\auctionslist.html:7 .\templates\editauction.html:3
 #: .\templates\searchresults.html:4
-#, fuzzy
-#| msgid "Auction "
 msgid "Edit Auction"
-msgstr "die Auktion"
+msgstr "Révisez la Vente aux enchères"
 
 #: .\templates\auctionslist.html:7 .\templates\searchresults.html:4
 msgid "Add Bid"
-msgstr "Fügen Sie Gebot hinzu"
+msgstr "Ajoutez l'Offre"
 
 #: .\templates\auctionslist.html:8
-#, fuzzy
-#| msgid "Auction "
 msgid "Ban Auction:"
-msgstr "die Auktion"
+msgstr "Vente aux enchères d'Interdit:"
 
 #: .\templates\auctionslist.html:8
-#, fuzzy
-#| msgid "Auction "
 msgid "Ban Auction"
-msgstr "die Auktion"
+msgstr "Vente aux enchères d'Interdit"
 
 #: .\templates\auctionslist.html:9 .\templates\searchresults.html:5
 msgid "Seller:"
-msgstr "Verkäufer:"
+msgstr "Vendeur:"
 
 #: .\templates\auctionslist.html:9 .\templates\bid.html:12
 #: .\templates\confirmauction.html:15 .\templates\confirmban.html:16
 #: .\templates\editauction.html:9
 msgid "Title:"
-msgstr "Titel:"
+msgstr "Titre:"
 
 #: .\templates\auctionslist.html:9 .\templates\bid.html:15
 #: .\templates\searchresults.html:5
 msgid "Starting Bid:"
-msgstr "Das Starten des Gebotes:"
+msgstr "Commencement de l'Offre:"
 
 #: .\templates\auctionslist.html:9 .\templates\bid.html:16
 #: .\templates\confirmauction.html:18 .\templates\confirmban.html:20
 #: .\templates\searchresults.html:5
 msgid "Latest Bid:"
-msgstr "Letztes Gebot:"
+msgstr "La Dernière Offre:"
 
 #: .\templates\auctionslist.html:10
-#, fuzzy
-#| msgid "Auction "
 msgid "Auction ends:"
-msgstr "die Auktion"
+msgstr "Fins de vente aux enchères:"
 
 #: .\templates\auctionslist.html:11 .\templates\searchresults.html:7
 msgid "Item description:"
-msgstr "Artikel-Beschreibung:"
+msgstr "Description d'article:"
 
 #: .\templates\auctionslist.html:15 .\templates\searchresults.html:10
 msgid "No Auctions Available"
-msgstr "Keine Verfügbaren Versteigerungen"
+msgstr "Aucune Vente aux enchères Disponible"
 
 #: .\templates\base.html:12 .\templates\base2.html:12
-#, fuzzy
-#| msgid "Auction "
 msgid "Search Auction"
-msgstr "die Auktion"
+msgstr "Fouillez la Vente aux enchères"
 
 #: .\templates\base.html:13 .\templates\base2.html:14 .\templates\bid.html:27
 msgid "Home"
-msgstr "Zuhause"
+msgstr "Maison"
 
 #: .\templates\base.html:15 .\templates\base2.html:16
 #: .\templates\confirmauction.html:3 .\templates\createauction.html:3
 #: .\templates\createauction.html:6
-#, fuzzy
-#| msgid "Auction "
 msgid "Create Auction"
-msgstr "die Auktion"
+msgstr "Créez la Vente aux enchères"
 
 #: .\templates\base.html:16 .\templates\base2.html:17
 msgid "Logout"
-msgstr "Abmeldung"
+msgstr "Logout"
 
 #: .\templates\base.html:17 .\templates\base2.html:18
 #: .\templates\edituserdata.html:3 .\templates\edituserdata.html:6
 msgid "Edit User Data"
-msgstr "Editieren Sie Benutzerdaten"
+msgstr "Révisez des Données d'Utilisateur"
 
 #: .\templates\base.html:20 .\templates\base2.html:21
 msgid "Login"
-msgstr "Anmeldung"
+msgstr "Ouverture de session"
 
 #: .\templates\base.html:21 .\templates\base2.html:22
 msgid "Add new user"
-msgstr "Neuen Benutzer hinzufügen"
+msgstr "Ajoutez le nouvel utilisateur"
 
 #: .\templates\base.html:24
 msgid "Selected Currency:"
-msgstr "Ausgewählte Währung"
+msgstr "Devise Choisie:"
 
 #: .\templates\base.html:24
 msgid "Rate:"
-msgstr "Rate:"
+msgstr "Taux:"
 
 #: .\templates\base.html:34
-#, fuzzy
-#| msgid "Selected Currency:"
 msgid "Selected Language:"
-msgstr "Ausgewählte Währung:"
+msgstr "Langue Choisie:"
 
 #: .\templates\base.html:47 .\templates\base.html:52
 msgid "Welcome to our page"
-msgstr "Herzlich willkommen in unsere Seite"
+msgstr "Soyez bienvenus à notre page"
 
 #: .\templates\bid.html:4
 msgid "Place a bid"
-msgstr "Legen Sie ein Gebot"
+msgstr "Placez une offre"
 
 #: .\templates\bid.html:13 .\templates\confirmauction.html:16
 #: .\templates\confirmban.html:18 .\templates\editauction.html:10
 msgid "Description:"
-msgstr "Beschreibung:"
+msgstr "Description:"
 
 #: .\templates\bid.html:14 .\templates\confirmban.html:17
-#, fuzzy
-#| msgid "Auction "
 msgid "Auction Status:"
-msgstr "Versteigerungsstatus:"
+msgstr "Statut de Vente aux enchères:"
 
 #: .\templates\confirmauction.html:6 .\templates\confirmban.html:6
-#, fuzzy
-#| msgid "Auction "
 msgid "Confirm Auction"
-msgstr "Bestätigen Sie Versteigerung"
+msgstr "Confirmez la Vente aux enchères"
 
 #: .\templates\confirmauction.html:14 .\templates\confirmban.html:14
 msgid "Seller ID:"
-msgstr "Verkäufer-Personalausweis:"
+msgstr "Carte d'identité de vendeur:"
 
 #: .\templates\confirmauction.html:17 .\templates\confirmban.html:19
 msgid "Min Price:"
-msgstr "Minute-Preis:"
+msgstr "Prix de Minute:"
 
 #: .\templates\confirmauction.html:19
 msgid "Deadline:"
-msgstr "Termin:"
+msgstr "Date limite:"
 
 #: .\templates\confirmauction.html:21 .\templates\confirmban.html:24
 msgid "Yes"
-msgstr "Ja"
+msgstr "Oui"
 
 #: .\templates\confirmauction.html:22 .\templates\confirmban.html:25
 msgid "No"
-msgstr "Nein"
+msgstr "Non"
 
 #: .\templates\confirmban.html:3
 msgid "Ban Selected Auction"
-msgstr "Verbot Ausgewählte Versteigerung"
+msgstr "Interdit Vente aux enchères Choisie"
 
 #: .\templates\confirmban.html:15
 msgid "ID:"
-msgstr "PERSONALAUSWEIS:"
+msgstr "CARTE D'IDENTITÉ:"
 
 #: .\templates\confirmban.html:21
 msgid "Biding ends:"
-msgstr "Das Erwarten von Enden:"
+msgstr "Le fait de demeurer des fins:"
 
 #: .\templates\createauction.html:11 .\templates\searchresults.html:6
 msgid "Please give date and time in YYYY mm dd HH:MM format:"
-msgstr "Geben Sie bitte Datum und Zeit mit dem YYYY Mm dd HH:MM Format:"
+msgstr "Donnez s'il vous plaît la date et le temps dans le millimètre YYYY dd HH:MM le format :"
 
 #: .\templates\editauction.html:6
 msgid "Your are editting auction:"
-msgstr "Ihr Editting-Versteigerung sind:"
+msgstr "Votre sont la vente aux enchères d'editting:"
 
 #: .\templates\registration\login.html:14
 msgid "Submit"
-msgstr "Gehorchen"
+msgstr "Soumettre"
 
 #: .\templates\registration\registration.html:7
 msgid "Create an account"
-msgstr "Schaffen Sie eine Rechnung"
+msgstr "Créez un compte"
 
 #: .\templates\searchauction.html:3
 msgid "Search"
-msgstr "Suche"
+msgstr "Chercher"
 
 #: .\templates\searchauction.html:3
 msgid "Results"
-msgstr "Ergebnisse"
+msgstr "Résultats"
 
 #: .\templates\searchauction.html:6
 msgid "Search:"
-msgstr "Suche:"
+msgstr "Chercher:"
 
 #: .\templates\searchauction.html:12
 msgid "Results for"
-msgstr "Ergebnisse dafür"
+msgstr "Résultats pour"
 
 #: .\templates\searchresults.html:6
-#, fuzzy
-#| msgid "Auction "
 msgid "Auction ends :"
-msgstr "Versteigerungsenden:"
+msgstr "Fins de vente aux enchères :"

@@ -20,9 +20,9 @@
         <a href="/login/">{% trans 'Login' %}</a>
         <a href="/createuser/">{% trans 'Add new user' %}</a>
     {% endif %}
-
-    <b>{%  trans 'Selected Currency:'%}</b> {{ currency }} <td></td><b>{% trans 'Rate:' %}</b> EUR vs {{ currency }} : {{ rate }}
     <br><br>
+    <b>{%  trans 'Selected Currency:'%}</b> {{ currency }} <td></td><b>{% trans 'Rate:' %}</b> EUR vs {{ currency }} : {{ rate }}
+    <br>
     <form action="/readjson/" method="POST">{% csrf_token %}
         <select name="dropdown">
             {% for key,value in rates.items %}
@@ -40,17 +40,6 @@
         </select>
         <input type="submit" value="Apply">
     </form></b> </p>
-    <br>
-
-    {% get_available_languages as LANGUAGES %}
-    <!-- Current language: {{ LANGUAGE_CODE }} -->
-    <p>{% trans "Welcome to our page" %}</p>
-
-    {% language 'en' %}
-        {% get_current_language as LANGUAGE_CODE %}
-        <!-- Current language: {{ LANGUAGE_CODE }} -->
-        <p>{% trans "Welcome to our page" %}</p>
-    {% endlanguage %}
 
     {% if messages %}
         <ul class="messages">

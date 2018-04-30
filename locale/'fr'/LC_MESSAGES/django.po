@@ -99,7 +99,7 @@ msgstr ""
 
 #: .\YAAS_App\views.py:294 .\YAAS_App\views.py:295
 msgid "Auction "
-msgstr ""
+msgstr "Vente aux enchères"
 
 #: .\YAAS_App\views.py:312
 msgid "You must login before you are edit your data"
@@ -111,16 +111,16 @@ msgstr ""
 
 #: .\templates\base.html:13 .\templates\base2.html:13
 msgid "Home"
-msgstr ""
+msgstr "Maison"
 
 #: .\templates\base.html:20 .\templates\base2.html:20
 msgid "Login"
-msgstr ""
+msgstr "Ouverture de session"
 
 #: .\templates\base.html:21
 msgid "Add new user"
-msgstr ""
+msgstr "Ajoutez le nouvel utilisateur"
 
 #: .\templates\base.html:24
 msgid "Selected Currency:"
-msgstr ""
+msgstr "Devise Choisie"

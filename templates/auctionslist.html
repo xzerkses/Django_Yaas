@@ -4,9 +4,9 @@
     {% load i18n %}
 {% for auction in auctions %}
     {% if auction.auction_status != 'B' %}
-        <h2>{{ auction.title }}</h2> <a href="/editauction/{{ auction.id }}">{% trans 'Edit Auction'%}</a> <a href="/addpid/{{ auction.id }}"> {% trans 'Add Pid'%}</a>
+        <h2>{{ auction.title }}</h2> <a href="/editauction/{{ auction.id }}">{% trans 'Edit Auction'%}</a> <a href="/addbid/{{ auction.id }}"> {% trans 'Add Bid'%}</a>
         {% if user.is_staff %} {% trans 'Ban Auction:'%} <a href="/banview/{{ auction.id }}">{% trans 'Ban Auction'%}</a>{% endif %}
-        <p><b>{% trans 'Seller:'%}</b>{{ auction.seller }}<b>{% trans 'Title:'%}</b>{{ auction.title }} <b>{% trans 'Starting Pid:'%}</b>{{ auction.start_price|mul:rate }} <b>{% trans 'Latest Pid:'%}</b>{{ auction.latest_pid|mul:rate}} </p>
+        <p><b>{% trans 'Seller:'%}</b>{{ auction.seller }}<b>{% trans 'Title:'%}</b>{{ auction.title }} <b>{% trans 'Starting Bid:'%}</b>{{ auction.start_price|mul:rate }} <b>{% trans 'Latest Bid:'%}</b>{{ auction.latest_bid|mul:rate}} </p>
         <p><b>{% trans 'Auction ends:'%}</b> {{ auction.endtime }}</p>
         <p><b>{% trans 'Item description:'%}</b>{{ auction.description }}</p>
 

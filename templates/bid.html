@@ -1,24 +1,24 @@
 {% extends 'base2.html' %}
 {% load i18n %}
 {% block content %}
-<p><b>{% trans 'Place a Pid'%}</b></p>
+<p><b>{% trans 'Place a bid'%}</b></p>
   {% if error%}
   <p> <b>{{ error }}</b> </p>
     {% endif %}
 
 
-    <form action="/savepid/{{ auction.id }} {{ pid.id }}" method="post">
+    <form action="/savebid/{{ auction.id }} {{ bid.id }}" method="post">
         {% csrf_token %}
         <label> <b>{% trans 'Title:'%}</b> {{ auction.title }}</label><br>
         <label> <b>{% trans 'Description:'%}</b> {{ auction.description }}</label><br>
         <label> <b>{% trans 'Auction Status:'%}</b> {{ auction.auction_status }}</label><br>
-        <label> <b>{% trans 'Starting pid:'%}</b> {{ auction.start_price }}</label><br>
-        <label> <b>{% trans 'Latest Pid:'%}</b> {{ auction.latest_pid }}</label><br>
+        <label> <b>{% trans 'Starting Bid:'%}</b> {{ auction.start_price }}</label><br>
+        <label> <b>{% trans 'Latest Bid:'%}</b> {{ auction.latest_bid }}</label><br>
 
 
         {{ form.as_p }}
         <INPUT TYPE=HIDDEN NAME="auction_id" VALUE="{{auction.id}}">
-        <INPUT TYPE=HIDDEN NAME="latest_pid" VALUE="{{ auction.latest_pid }}">
+        <INPUT TYPE=HIDDEN NAME="latest_bid" VALUE="{{ auction.latest_bid }}">
         <INPUT TYPE=HIDDEN NAME="description" VALUE="{{ description }}">
         <INPUT TYPE=HIDDEN NAME="start_price" VALUE="{{ start_price }}">
         <INPUT TYPE=HIDDEN NAME="endtime" VALUE="{{ endtime }}">

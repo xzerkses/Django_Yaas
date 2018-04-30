@@ -10,6 +10,8 @@
           <option value="YAAS_App.forms.Decimal" />
           <option value="YAAS_App.views.auction" />
           <option value="YAAS_App.views.User" />
+          <option value="YAAS_App.models.auth_base" />
+          <option value="YAAS_App.models.auth" />
         </list>
       </option>
     </inspection_tool>

@@ -26,15 +26,15 @@ class CronJob(CronJobBase):
             #print(datetime.now())
             if auction.auction_status=='A' and check_endingtime(auction.endtime) or auction.auction_status=='C':
                 auction.auction_status='D'
-                auction.latest_pid
-                pids=Pid.objects.filter(auction_id=auction)
+                auction.latest_bid
+                bids=bid.objects.filter(auction_id=auction)
 
                 mail_subject = "Auction " + str(auction.title) + " is resolved by the system."
                 msg = "Auction " + str(auction.title) + " is resolved. Winner is"
 
-                pids = Pid.objects.filter(auction_id=auction).distinct()
-                pidders = [p.pidder for p in pids]
-                emails_addresses = list(set([p.email for p in pidders]))
+                bids = bid.objects.filter(auction_id=auction).distinct()
+                bidders = [p.bidder for p in bids]
+                emails_addresses = list(set([p.email for p in bidders]))
                 emails_addresses.append((auction.seller).email)
                 sendEmail(mail_subject, msg, emails_addresses)
 

@@ -1,8 +1,8 @@
 {% load mathfilters %}
 {% load i18n %}
 {% for auction in auctions %}
-    <h2>{{ auction.title }}</h2> <a href="/editauction/{{ auction.id }}">{% trans 'Edit Auction'%}</a> <a href="/addpid/{{ auction.id }}"> {% trans 'Add Pid'%}</a>
-    <p><b>{% trans 'Seller:'%}</b>{{ auction.seller }}<b>Title:</b>{{ auction.title }} <b>{% trans 'Starting Pid:'%}</b> <b>{% trans 'Latest Pid:'%}</b></p>
+    <h2>{{ auction.title }}</h2> <a href="/editauction/{{ auction.id }}">{% trans 'Edit Auction'%}</a> <a href="/addbid/{{ auction.id }}"> {% trans 'Add Bid'%}</a>
+    <p><b>{% trans 'Seller:'%}</b>{{ auction.seller }}<b>Title:</b>{{ auction.title }} <b>{% trans 'Starting Bid:'%}</b> <b>{% trans 'Latest Bid:'%}</b></p>
     <p><b>{% trans 'Please give date and time in YYYY mm dd HH:MM format:'%} </b> <b>{% trans 'Auction ends :'%}</b> {{ auction.endtime }}</p>
     <p><b>{% trans 'Item description:'%}</b>{{ auction.description }}</p>
 

@@ -17,8 +17,8 @@
         <label> <b>{% trans 'Auction Status:'%}</b> {{ auction.auction_status }}</label><br>
         <label> <b>{% trans 'Description:'%}</b> {{ auction.description }}</label><br>
         <label> <b>{% trans 'Min Price:'%}</b> {{ auction.start_price }}</label><br>
-        <label> <b>{% trans 'Latest Pid:'%}</b> {{ auction.latest_pid }}</label><br>
-        <label> <b>{% trans 'Piding ends:'%}</b> {{ auction.endtime }}</label><br>
+        <label> <b>{% trans 'Latest Bid:'%}</b> {{ auction.latest_bid }}</label><br>
+        <label> <b>{% trans 'Biding ends:'%}</b> {{ auction.endtime }}</label><br>
         <br>
 
         <p><input type="radio" name="option" value="Yes">{% trans 'Yes'%}</p>
@@ -28,7 +28,7 @@
         <INPUT TYPE=HIDDEN NAME="auction_status" VALUE="{{ auction.auction_status }}">
         <INPUT TYPE=HIDDEN NAME="description" VALUE="{{ auction.description }}">
         <INPUT TYPE=HIDDEN NAME="start_price" VALUE="{{ auction.start_price }}">
-        <INPUT TYPE=HIDDEN NAME="latest_pid" VALUE="{{ auction.latest_pid }}">
+        <INPUT TYPE=HIDDEN NAME="latest_bid" VALUE="{{ auction.latest_bid }}">
         <INPUT TYPE=HIDDEN NAME="endtime" VALUE="{{ auction.endtime }}">
         <input type="submit" value="Submit">
     </form>

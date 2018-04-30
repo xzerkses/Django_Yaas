@@ -1,4 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
+
+from YAAS_App.models import Bid
 from YAAS_App.views import *
 from datetime import datetime
 class Command(BaseCommand):
@@ -22,9 +24,9 @@ class Command(BaseCommand):
                 mail_subject = "Auction " + str(auction.title) + " is resolved by the system."
                 msg = "Auction " + str(auction.title) + " is resolved."
 
-                pids = Pid.objects.filter(auction_id=auction).distinct()
-                pidders = [p.pidder for p in pids]
-                emails_addresses = list(set([p.email for p in pidders]))
+                bids = Bid.objects.filter(auction_id=auction).distinct()
+                bidders = [b.bidder for b in bids]
+                emails_addresses = list(set([b.email for b in bidders]))
                 emails_addresses.append((auction.seller).email)
                 sendEmail(mail_subject, msg, emails_addresses)
             self.stdout.write(self.style.SUCCESS('Successfully resolved auctions'))

@@ -67,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'YAAS.urls'
@@ -146,10 +147,10 @@ STATIC_URL = '/static/'
 
 
 # Tell nose to measure coverage on the YAAS_App apps
-NOSE_ARGS = [
-    #'--with-coverage',
-    #'--cover-package=YAAS_App',
-]
+# NOSE_ARGS = [
+#     '--with-coverage',
+#     '--cover-package=YAAS_App',
+# ]
 
 CRON_CLASSES = [
     "YAAS_App.cronjobs.CronJob",

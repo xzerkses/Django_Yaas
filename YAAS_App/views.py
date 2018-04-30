@@ -17,8 +17,8 @@ from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from _datetime import datetime, timedelta
-from YAAS_App.forms import CreateAuction, ConfirmAuction, RegistrationForm, AddPid, ConfirmBan, EditUserDataForm
-from YAAS_App.models import User, Auction, Pid
+from YAAS_App.forms import CreateAuction, ConfirmAuction, RegistrationForm, AddBid, ConfirmBan, EditUserDataForm
+from YAAS_App.models import User, Auction, Bid #Profile
 from django.contrib import messages
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 import requests
@@ -60,9 +60,7 @@ class AddAuction(View):
             title=cleandata['title']
             description=cleandata['description']
             start_price=cleandata['start_price']
-            #print(start_price)
-            latest_pid=start_price
-            print(latest_pid)
+            latest_bid=start_price
             endtime=cleandata['endtime']
             auction_status=cleandata['auction_status']
 
@@ -71,7 +69,7 @@ class AddAuction(View):
 
             return render(request, 'confirmauction.html',
                           {'form':form,'seller':seller,'title':title,'description':description,
-                           'start_price':start_price,'latest_pid':latest_pid,'endtime':endingdate,
+                           'start_price':start_price,'latest_bid':latest_bid,'endtime':endingdate,
                            'auction_status':auction_status})
         else:
             messages.add_message(request,messages.ERROR,_("Data in form is not valid."))
@@ -87,12 +85,12 @@ def saveauction(request):
 
         a_description = request.POST.get('description', '')
         a_start_price = request.POST.get('start_price', '')
-        a_latest_pid=request.POST.get('latest_pid','')
+        a_latest_bid=request.POST.get('latest_bid','')
         tmp_end_time = request.POST.get('endtime', '')
 
         a_end_time=datetime.strptime(tmp_end_time,'%Y-%m-%d %H:%M') #'%Y-%m-%d %H:%M'
 
-        auction = Auction(seller=a_seller,title =a_title, description = a_description, start_price=a_start_price,latest_pid=a_latest_pid, endtime=a_end_time)
+        auction = Auction(seller=a_seller,title =a_title, description = a_description, start_price=a_start_price,latest_bid=a_latest_bid, endtime=a_end_time)
         auction.save()
 
         subject = _('Notification from Old Junk Auctions.')
@@ -110,6 +108,7 @@ def saveauction(request):
 def browseauctions(request):
     languages={'English':'en','German':'de','France':'fr'}
     auctions=Auction.objects.all().order_by('title')
+
     response = requests.get("http://api.fixer.io/latest")
 
     if not "sel_currency" in request.session:
@@ -118,17 +117,31 @@ def browseauctions(request):
     if not "rate" in request.session:
         request.session["rate"] = 1
 
-    #if not "lang" in request.session:
-    #    request.session["lang"] = "en"
+    # if request.user.is_authenticated:
+    #     if not request.user.profile.lang_preference:
+    #         request.session[translation.LANGUAGE_SESSION_KEY] = "en"
+    #         request.user.profile.lang_preference = "en"
+    #         request.user.save()
+    #         translation.activate("en")
+    #
+    #     else:
+    #         lang = request.user.profile.lang_preference
+    #         translation.activate(lang)
+    #         request.session[translation.LANGUAGE_SESSION_KEY]=lang
+
     if not translation.LANGUAGE_SESSION_KEY in request.session:
-        print("here we are")
-        request.session[translation.LANGUAGE_SESSION_KEY] = "en"
+        request.session[translation.LANGUAGE_SESSION_KEY] = 'en'
+        translation.activate("en")
 
     data=response.json()
     currency=request.session["sel_currency"]
     rate =request.session["rate"]
     rates = data['rates']
+
+
+
     lang_type=request.session[translation.LANGUAGE_SESSION_KEY]
+
     for key, value in languages.items():
         if value == lang_type:
             language=key
@@ -148,7 +161,7 @@ def savechanges(request,offset):
         title = request.POST["title"].strip()
         auction.title=title
         auction.description=description
-        auction.lockedby=""
+        auction.lockedby="#"
         #print("edited auction savad: ",auction.lockedby)
         auction.save()
         messages.add_message(request,messages.INFO,_("Auction successfully saved."))
@@ -162,8 +175,8 @@ def editauction(request,offset):
     else:
         auction=get_object_or_404(Auction, id=offset)
         if request.user==auction.seller:
-            #print("auction lockedby: ",auction.lockedby)
-            if auction.lockedby!="" and auction.lockedby!=request.session._get_or_create_session_key():
+
+            if auction.lockedby!="#" and auction.lockedby!=request.session._get_or_create_session_key():
                 messages.add_message(request, messages.ERROR, _("Auction is currently used by another user. You can try to edit auction later."))
                 return HttpResponseRedirect(reverse("home"))
             auction.lockedby=request.session._get_or_create_session_key()
@@ -215,25 +228,27 @@ def readJson(request):
 
 
 @login_required
-def addpid(request,offset):
+def addbid(request,offset):
 
     if not request.user.is_authenticated():
-        messages.add_message(request, messages.ERROR, _("You must login before you are allowed to pid"))
+        messages.add_message(request, messages.ERROR, _("You must login before you are allowed to bid"))
         return HttpResponseRedirect('/login/?next=%s')
     else:
         auction = get_object_or_404(Auction, id=offset)
-        print("adding pid: ", auction.lockedby)
-        if not request.user.is_staff and not (request.user.username==str(auction.seller)) and auction.auction_status=='A' and (auction.lockedby=="" or auction.lockedby==request.session._get_or_create_session_key()):
-            form=AddPid()
+
+        if not request.user.is_staff and not (request.user.username==str(auction.seller)) and auction.auction_status=='A' and (auction.lockedby=="#" or auction.lockedby==request.session._get_or_create_session_key()):
+            form=AddBid()
             auction.lockedby=request.session._get_or_create_session_key()
+
             auction.save()
-            return render(request,'pid.html',{'form': form, 'auction':auction})
+            return render(request,'bid.html',{'form': form, 'auction':auction})
         else:
             if request.user.is_staff:
-                messages.add_message(request, messages.ERROR, _("Administrators are not allowed to pid"))
+                messages.add_message(request, messages.ERROR, _("Administrators are not allowed to bid"))
             if request.user.username==str(auction.seller):
-                messages.add_message(request, messages.ERROR, _("Seller is not allowed to pid"))
-            if auction.lockedby!="" and auction.lockedby!=request.session._get_or_create_session_key():
+                print("Seller is here")
+                messages.add_message(request, messages.ERROR, _("Seller is not allowed to bid"))
+            if auction.lockedby!="#" and auction.lockedby!=request.session._get_or_create_session_key():
                 messages.add_message(request, messages.ERROR, _("Someone else is currently accessing auction data. Try again a bit later."))
 
 
@@ -248,54 +263,54 @@ def check_endingtime(end_datetime):
 
 
 
-def savepid(request,offset):
+def savebid(request,offset):
     auction = get_object_or_404(Auction, id=offset)
     if request.method == "POST":
-        form = AddPid(request.POST)
-        latest_pid = request.POST["latest_pid"].strip()
+        form = AddBid(request.POST)
+        latest_bid = request.POST["latest_bid"].strip()
 
         if form.is_valid():
 
             if not request.user.is_staff:
 
                 cleandata = form.cleaned_data
-                a_pid_value = cleandata["pid"]
+                a_bid_value = cleandata["bid"]
 
 
-                if Decimal(a_pid_value) < Decimal(0.01)+Decimal(latest_pid):
-                    messages.add_message(request, messages.ERROR, _("Pid value must be at least 0.01€ higher than previous pid."))
-                    return render(request, 'pid.html', {'form': form, 'auction': auction})
+                if Decimal(a_bid_value) < Decimal(0.01)+Decimal(latest_bid):
+                    messages.add_message(request, messages.ERROR, _("bid value must be at least 0.01 higher than previous bid."))
+                    return render(request, 'bid.html', {'form': form, 'auction': auction})
 
                 if(check_endingtime(auction.endtime-timedelta(minutes=5))):
                     auction.endtime=auction.endtime+timedelta(minutes=5)
                     auction.save()
 
                 if check_endingtime(auction.endtime):
-                    messages.add_message(request, messages.ERROR, _("Piding time has ended."))
+                    messages.add_message(request, messages.ERROR, _("biding time has ended."))
                     auction.auction_status='C'
                     auction.save()
-                    return render(request, 'pid.html', {'form': form, 'auction': auction})
+                    return render(request, 'bid.html', {'form': form, 'auction': auction})
 
-                a_pidder=request.user
+                a_bidder=request.user
 
-                a_pid_datetime=datetime.now()
-                print(a_pid_value)
+                a_bid_datetime=datetime.now()
+                print(a_bid_value)
 
 
-                pid = Pid(pidder=a_pidder,auction_id=auction, pid_value=a_pid_value,pid_datetime=a_pid_datetime)
-                pid.save()
+                bid = Bid(bidder=a_bidder,auction_id=auction, bid_value=a_bid_value,bid_datetime=a_bid_datetime)
+                bid.save()
 
-                auction.latest_pid=a_pid_value
-                auction.lockedby=""
+                auction.latest_bid=a_bid_value
+                auction.lockedby="#"
                 auction.save()
-                messages.add_message(request, messages.INFO, _("Pid successfully saved."))
+                messages.add_message(request, messages.INFO, _("bid successfully saved."))
 
-                mail_subject = _("A new pid was placed in auction were you are involved.")
-                msg = _("New pid with " + str(a_pid_value) + " was placed on auction " + auction.title + ". Pidding is endind " + datetime.strftime(auction.endtime,'%Y-%m-%d %H:%M'))
+                mail_subject = _("A new bid was placed in auction were you are involved.")
+                msg = _("New bid with value of " + str(a_bid_value) + " was placed on auction " + auction.title + ". bidding is endind " + datetime.strftime(auction.endtime,'%Y-%m-%d %H:%M'))
 
-                pids = Pid.objects.filter(auction_id=auction).distinct()
-                pidders = [p.pidder for p in pids]
-                emails_addresses = list(set([p.email for p in pidders]))
+                bids = Bid.objects.filter(auction_id=auction).distinct()
+                bidders = [p.bidder for p in bids]
+                emails_addresses = list(set([p.email for p in bidders]))
                 emails_addresses.append((auction.seller).email)
 
                 sendEmail(mail_subject, msg, emails_addresses)
@@ -305,16 +320,29 @@ def savepid(request,offset):
 
             messages.add_message(request, messages.ERROR, _("Data in form is not valid"))
             auction = Auction.objects.filter(id=offset)
-            return render(request, 'pid.html', {'form': form,'auction':auction })
+            return render(request, 'bid.html', {'form': form,'auction':auction })
 
 @login_required
 def banview(request,offset):
-    if not request.user.is_authenticated() or not request.user.is_staff:
-        messages.add_message(request, messages.ERROR, _("You must login before you are allowed to ban"))
+
+    print("Sanity check1")
+    if not request.user.is_authenticated() and not request.user.is_staff:
+        # messages.add_message(request, messages.ERROR, _("You must login before you are allowed to ban"))
         return HttpResponseRedirect('/login/?next=%s')
+
+
     else:
-        auction=get_object_or_404(Auction,id=offset)
-        print(auction.title)
+        auction = get_object_or_404(Auction, id=offset)
+        print("here:",auction.lockedby)
+        print("testing:",auction.lockedby!="#" and auction.lockedby!=request.session._get_or_create_session_key())
+        if auction.lockedby!="#" and auction.lockedby!=request.session._get_or_create_session_key():
+            print("Sanity check")
+            messages.add_message(request, messages.ERROR,_("Someone else is currently accessing auction data. Try again a bit later."))
+            HttpResponseRedirect(reverse("home"))
+
+
+
+
         form=ConfirmBan()
         return render(request,'confirmban.html',{'auction':auction})
 
@@ -330,9 +358,9 @@ def ban(request,offset):
         mail_subject=_("Auction "+str(auction.title)+" was banned by admin.")
         msg=_("Auction "+str(auction.title)+" was banned by administrator. Auction did not comply to rules of auction.")
 
-        pids = Pid.objects.filter(auction_id=auction)
-        pidders = [p.pidder for p in pids]
-        emails_addresses = list(set([p.email for p in pidders]))
+        bids = Bid.objects.filter(auction_id=auction)
+        bidders = [b.bidder for b in bids]
+        emails_addresses = list(set([b.email for b in bidders]))
         emails_addresses.append((auction.seller).email)
         sendEmail(mail_subject, msg, emails_addresses)
 
@@ -362,7 +390,7 @@ def edituser(request):
                 cleandata = form.cleaned_data
 
                 email = cleandata["email"]
-                print(email)
+
                 request.user.email=email
                 form.save()
                 update_session_auth_hash(request, form.user )
@@ -370,32 +398,26 @@ def edituser(request):
             return redirect('home')
 
 
+
+
 def set_lang(request):
     selection = request.POST.get('languages', '')
-    print("selection",selection)
     value = re.split("\s", selection)
     language = value[0]
-    print("language now",translation.get_language())
-
-
     lang_type = value[1]
-    print("new language",lang_type )
-    #request.session["lang_type"] = lang
-
     translation.activate(lang_type)
     request.session[translation.LANGUAGE_SESSION_KEY] = lang_type
-    print(translation.get_language())
 
+    # if request.user.is_authenticated:
+    #     user=request.user
+    #     user.profile.lang_preference=lang_type
+    #     user.save()
     return HttpResponseRedirect(reverse("home"))
 
 def clearhome(request,offset):
-    print("offset:",offset)
     if offset!="":
-        print("here")
         auction = get_object_or_404(Auction, id=offset)
-        auction.lockedby = ""
+        auction.lockedby = "#"
         auction.save()
-    else:
-        print("id = ",offset)
 
     return HttpResponseRedirect(reverse("home"))

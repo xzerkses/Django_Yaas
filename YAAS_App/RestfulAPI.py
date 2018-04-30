@@ -15,10 +15,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from YAAS_App.forms import AddPid
+from YAAS_App.forms import AddBid
 from YAAS_App.views import check_endingtime
-from .models import Auction, Pid
-from .serializers import PidSerializer, AuctionSerializer
+from .models import Auction, Bid
+from .serializers import BidSerializer, AuctionSerializer
 from django.contrib.auth import authenticate
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotAllowed, request, Http404
 
@@ -38,7 +38,7 @@ class AuctionList(APIView):   #
         return Response(serialized_data.data)
 
 
-class AuctionSearchAndPid(APIView): #APIView
+class AuctionSearchAndBid(APIView): #APIView
 
         def get_object(self, pk):
             try:
@@ -59,12 +59,12 @@ class AuctionSearchAndPid(APIView): #APIView
         def put(self, request, pk, format=None):
             auction = self.get_object(pk=pk)
             data = request.data
-            new_pidvalue = data.get('pid_value')
+            new_bidvalue = data.get('bid_value')
             user=request.user
             print("user: ",user)
 
-            if Decimal(new_pidvalue) < Decimal(0.01) + auction.latest_pid:
-                # messages.add_message(request, messages.ERROR, "Pid value must be at least 0.01€ higher than previous pid.")
+            if Decimal(new_bidvalue) < Decimal(0.01) + auction.latest_bid:
+                # messages.add_message(request, messages.ERROR, "Bid value must be at least 0.01€ higher than previous bid.")
                 return HttpResponse(status=404)  # incorrect value
 
             if (check_endingtime(auction.endtime - timedelta(minutes=5))):
@@ -77,9 +77,9 @@ class AuctionSearchAndPid(APIView): #APIView
                 auction.save()
                 return Response(status=408)
 
-            pid = Pid(pidder=request.user, auction_id=auction, pid_value=new_pidvalue, pid_datetime=datetime.now())
-            pid.save()
-            print("pid was successful")
+            bid = Bid(bidder=request.user, auction_id=auction, bid_value=new_bidvalue, bid_datetime=datetime.now())
+            bid.save()
+            print("Bid was successful")
             return Response(status=200)
 
 

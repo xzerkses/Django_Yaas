@@ -1,202 +1,316 @@
 import datetime
 
+from django.contrib import auth
 from django.contrib.auth.models import User, AnonymousUser
 from django.core import mail
 from django.test import TestCase, RequestFactory
 from django.test import Client
-from YAAS_App.models import Auction, Pid
+from YAAS_App.models import Auction, Bid
 from YAAS_App.views import saveauction
-from _datetime import datetime
+from _datetime import datetime, timedelta
+
 
 class AuctionTestCases(TestCase):
-    fixtures = ['db_data.json']
-    def setUp(self):
-        print("Test init: START***********************************************************************************")
-        print("A number of users in database is now: ",User.objects.count())
-        self.user =User.objects.create_user(username='alf', email='alf@trader.fi', password='alf123')
 
-        print("Added username",self.user,"to database. A number of users in database is now: ", User.objects.count())
+    fixtures =['db_data.json']
+    def setUp(self):
+
+        #self.user =User.objects.create_user(username='alf', email='alf@trader.fi', password='alf123')
+        self.user=User.objects.get(username='alf')
         response = self.client.login(username='alf', password='alf123')
-        print("Test init: *************************************************************************************END")
 
     def test_redict_createauction(self):
-        print("Test 2: START***********************************************************************************")
-        #test that create auction page responds
-        response = self.client.get('/createauction/')
+        #
+        response = self.client.get('/createauction/',follow=True)
         self.assertEqual(response.status_code, 200)
-        print("Test 2: *************************************************************************************END")
-
 
     def test_create_auction_db_level(self):
         # Creating seller for auction and adding auction to database
         auction_count=Auction.objects.count()
-        print("Test 3: START***********************************************************************************")
-        print("A number of auctions in the database before adding more auctions:",auction_count)
+        endtime = datetime.now() + timedelta(days=4)
         Auction.objects.create(seller=self.user,title='Old Hammer',auction_status='A',
-                               description='Rusty Hammer for sale',start_price=5.0,latest_pid=5.0,
-                               endtime='2018-04-27 18:00')
+                               description='Rusty Hammer for sale',start_price=5.0,latest_bid=5.0,
+                               endtime=datetime.strftime(endtime, '%Y-%m-%d %H:%M'))
         self.assertEqual(auction_count+1,Auction.objects.count())
-        print("A number of auctions in the database now:", Auction.objects.count())
-        print("Test 3: *************************************************************************************END")
 
-    def test_create_auction(self):
+
+    def test_create_auction_form_POST_too_short_auction_time(self):
+        #self.client.login(username='alf', password='alf123')
+        endtime=datetime.now()+timedelta(days=2)
+
+        response=self.client.post('/createauction/', {'ShortTime': 'A Stone Statue',
+                                           'description': 'Fine stone statue for sale', 'start_price': 15.0,'latest_bid': 15.0,
+                                           'auction_status':'A','endtime': datetime.strftime(endtime, '%Y-%m-%d %H:%M')},follow=True)
+        m = list(response.context['messages'])
+        #print(str(m[0]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(m[0]), "Data in form is not valid.")
+
+    def test_create_auction_form_POST_wrong_time_format_entered(self):
+        #self.client.login(username='alf', password='alf123')
+        endtime=datetime.now()+timedelta(days=2)
+
+        response=self.client.post('/createauction/', {'title': 'A Stone Statue',
+                                           'description': 'Fine stone statue for sale', 'start_price': 15.0,'latest_bid': 15.0,
+                                           'auction_status':'A','endtime': datetime.strftime(endtime, '%Y-%m-%d %H')},follow=True)
+        m = list(response.context['messages'])
+        print(str(m[0]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(m[0]), "Data in form is not valid.")
+
+
+    def test_create_auction_form_POST_too_low_auction_price(self):
+        #self.client.login(username='alf', password='alf123')
+        endtime=datetime.now()+timedelta(days=4)
+
+        response=self.client.post('/createauction/', {'title': 'A Stone Statue',
+                                           'description': 'Fine stone statue for sale', 'start_price': 0.005,'latest_bid': 0.005,
+                                           'auction_status':'A','endtime': datetime.strftime(endtime, '%Y-%m-%d %H:%M')},follow=True)
+        m = list(response.context['messages'])
+        #print(str(m[0]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(m[0]), "Data in form is not valid.")
+
+    def test_create_auction_form_POST_no_title(self):
+        #self.client.login(username='alf', password='alf123')
+        endtime=datetime.now()+timedelta(days=4)
+
+        response=self.client.post('/createauction/', {'title': '',
+                                           'description': 'Fine stone statue for sale', 'start_price': 0.005,'latest_bid': 0.005,
+                                           'auction_status':'A','endtime': datetime.strftime(endtime, '%Y-%m-%d %H:%M')},follow=True)
+        m = list(response.context['messages'])
+        #print(str(m[0]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(m[0]), "Data in form is not valid.")
+
+    def test_create_auction_form_POST_no_title(self):
+        #self.client.login(username='alf', password='alf123')
+        endtime=datetime.now()+timedelta(days=4)
+
+        response=self.client.post('/createauction/', {'title': '',
+                                           'description': 'Fine stone statue for sale', 'start_price': 0.005,'latest_bid': 0.005,
+                                           'auction_status':'A','endtime': datetime.strftime(endtime, '%Y-%m-%d %H:%M')},follow=True)
+        m = list(response.context['messages'])
+        #print(str(m[0]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(m[0]), "Data in form is not valid.")
+
+    def test_create_auction_form_POST_no_description(self):
+        # self.client.login(username='alf', password='alf123')
+        endtime = datetime.now() + timedelta(days=4)
+
+        response = self.client.post('/createauction/', {'title': 'A Stone Statue',
+                                                        'description': '',
+                                                        'start_price': 0.005, 'latest_bid': 0.005,
+                                                        'auction_status': 'A',
+                                                        'endtime': datetime.strftime(endtime, '%Y-%m-%d %H:%M')}, follow=True)
+        m = list(response.context['messages'])
+        print(str(m[0]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(m[0]), "Data in form is not valid.")
+
+
+
+    def test_save_auction_with_POST(self):
         auction_count=Auction.objects.count()
-        print("Test 4: START***********************************************************************************")
-        print("A number of auctions in the database now:", Auction.objects.count())
+        # print("Test 4: START***********************************************************************************")
+        # print("A number of auctions in the database now:", Auction.objects.count())
+        endtime=datetime.now()+timedelta(days=4)
+
         response=self.client.post('/saveauction/', {'option':'Yes', 'seller': self.user, 'title': 'A Stone Statue',
-                                           'description': 'Fine statue for sale', 'start_price': 15.0,'latest_pid': 15.0,
-                                           'auction_status':'A','endtime': '2018-04-27 18:00'})
-        print("auctions after post",Auction.objects.count())
+                                           'description': 'Fine statue for sale', 'start_price': 15.0,'latest_bid': 15.0,
+                                           'auction_status':'A','endtime': datetime.strftime(endtime, '%Y-%m-%d %H:%M')})
+        #print("auctions after post",Auction.objects.count())
         self.assertEqual(auction_count + 1, Auction.objects.count())
         self.assertEqual(len(mail.outbox), 1)
         self.assertRedirects(response, '/')
-        print("Test 4: ********************************************************************************************END")
 
-    def test_reset_user(self):
-        #change anonymous user
-        self.user=AnonymousUser()
-        response = self.client.login(response = self.client.login(username=' ', password=' '))
-        self.failUnlessEqual(response,False)
 
-    def test_add_auction(self):
-        print("Test 5: START***********************************************************************************")
-        print("Testing that user authentication works")
-        # test that create auction page responds
-        response = self.client.get('/createauction/')
+
+    def test_save_auction_with_POST_option_is_no(self):
+        auction_count=Auction.objects.count()
+        # print("Test 4: START***********************************************************************************")
+        # print("A number of auctions in the database now:", Auction.objects.count())
+        endtime=datetime.now()+timedelta(days=4)
+
+        response=self.client.post('/saveauction/', {'option':'No', 'seller': self.user, 'title': 'A Stone Statue',
+                                           'description': 'Fine statue for sale', 'start_price': 15.0,'latest_bid': 15.0,
+                                           'auction_status':'A','endtime': datetime.strftime(endtime, '%Y-%m-%d %H:%M')})
+        #print("auctions after post",Auction.objects.count())
+        self.assertEqual(auction_count , Auction.objects.count())
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertRedirects(response, '/')
+
+    def test_add_auction_not_authenticated(self):
+
+        # test createauction without logged in user
+        self.client.logout()
+        response = self.client.get('/createauction/',follow=True)
+        #print("redirection :",response.redirect_chain)
+        last_url, status_code = response.redirect_chain[0]
+        #print("last url", last_url)
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response,'login/')
-        print("Test 5: *************************************************************************************END")
+        self.assertRedirects(response,'/login/?next=/createauction/')
+        #print("Test 5: *************************************************************************************END")
 
 
-class SimpleTestWithFactory(TestCase):
+class BidTestCases(TestCase):
     fixtures = ['db_data.json']
     def setUp(self):
-        # Every test needs access to the request factory.
-        self.factory = RequestFactory()
-        self.user = self.user =User.objects.create_user(username='alf',
-                                                        email='alf@trader.fi', password='alf123')
-    def test_details(self):
-        # Create an instance of a GET request.
-        request = self.factory.get('/saveauction/')
-
-        # Recall that middleware are not supported. You can simulate a
-        # logged-in user by setting request.user manually.
-
-        # request=self.client.post('/saveauction/', {'seller': self.user, 'title':'A Stone Statue','auction_status': 'A'
-        #     ,'description':'Fine statue for sale','start_price':15.0,'latest_pid':15.0,
-        #                                              'endtime':datetime.datetime.now()+datetime.timedelta(4)})
-        request = self.factory.post('/saveauction/', {'option':'Yes', 'seller': self.user, 'title': 'A Stone Statue',
-                                           'description': 'Fine statue for sale', 'start_price': 15.0,'latest_pid': 15.0,
-                                           'auction_status':'A','endtime': datetime.datetime.now() + datetime.timedelta(4)})
-
-class PidTestCases(TestCase):
-    fixtures = ['db_data.json']
-    def setUp(self):
-        # Every test needs access to the request factory.
-        self.user = User.objects.create_user(username='alf',email='alf@trader.fi', password='alf123')
-        self.seller = User.objects.create_user(username='seller',email='seller@trader.fi', password='sel567')
+        self.user = User.objects.get(username='alf')
+        self.seller = User.objects.get(username='seller')
         #login user in
-
+        testtime=datetime.now()+timedelta(days=4)
         self.auction = Auction.objects.create(seller=self.seller, title='Old Sledgehammer', auction_status='A',
-                                             description='Rusty Sledgehammer for sale', start_price=5.0, latest_pid=5.0,
-                                             endtime='2018-05-30 18:00')
+                                             description='Rusty Sledgehammer for sale', start_price=5.0, latest_bid=5.0,
+                                             endtime=datetime.strftime(testtime,'%Y-%m-%d %H:%M'))
+
         self.auction.save()
+        testtime_minutes = datetime.now() + timedelta(minutes=4)
+        self.auction_ending = Auction.objects.create(seller=self.seller, title='Old Sledgehammer', auction_status='A',
+                                              description='Rusty Sledgehammer for sale', start_price=5.0,
+                                              latest_bid=5.0,
+                                              endtime=datetime.strftime(testtime_minutes, '%Y-%m-%d %H:%M'))
+        self.auction_ending.save()
+
+        testtime_ended= datetime.now() - timedelta(minutes=20)
+        self.auction_ended = Auction.objects.create(seller=self.seller, title='Old Sledgehammer', auction_status='A',
+                                                     description='Rusty Sledgehammer for sale', start_price=5.0,
+                                                     latest_bid=5.0,
+                                                     endtime=datetime.strftime(testtime_ended, '%Y-%m-%d %H:%M'))
+        self.auction_ended.save()
         response = self.client.login(username='alf', password='alf123')
 
+    def test_addbid(self):
+        bid_value=5.5 #self.auction.latest_bid+0.1
+        bid_count=Bid.objects.count()
+        response=self.client.post('/savebid/'+str(self.auction.pk),{'bid':bid_value,'auction_id':self.auction,'latest_bid':self.auction.latest_bid, 'description':'', 'endtime':''})
+        self.assertEqual(bid_count + 1, Bid.objects.count())
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(response.status_code, 302)
 
-    def test_addpid(self):
-        pid_value=self.auction.latest_pid+0.1
-        print("test_addpid: auction: ",self.auction)
-        print("pid count before",Pid.objects.count())
-        print("pid_value: ", pid_value)
-        print("user: ",self.user)
-        response=self.client.post('/savepid/',{'pidder':self.user,'auction_id':self.auction,'pid_value':pid_value,'pid_datetime':datetime.now()})
-        #pid = Pid(pidder=a_pidder,auction_id=auction, pid_value=a_pid_value,pid_datetime=a_pid_datetime)
-        print("pid count after", Pid.objects.count())
-        print("test_addpid: savepid response: ", response)
-    # <form action="/savepid/{{ auction.id }} {{ pid.id }}" method="post">
-    #     {% csrf_token %}
-    #     <label> <b>{% trans 'Title:'%}</b> {{ auction.title }}</label><br>
-    #     <label> <b>{% trans 'Description:'%}</b> {{ auction.description }}</label><br>
-    #     <label> <b>{% trans 'Auction Status:'%}</b> {{ auction.auction_status }}</label><br>
-    #     <label> <b>{% trans 'Starting pid:'%}</b> {{ auction.start_price }}</label><br>
-    #     <label> <b>{% trans 'Latest Pid:'%}</b> {{ auction.latest_pid }}</label><br>
-    #
-    #
-    #     {{ form.as_p }}
-    #     <INPUT TYPE=HIDDEN NAME="auction_id" VALUE="{{auction.id}}">
-    #     <INPUT TYPE=HIDDEN NAME="latest_pid" VALUE="{{ auction.latest_pid }}">
-    #     <INPUT TYPE=HIDDEN NAME="description" VALUE="{{ description }}">
-    #     <INPUT TYPE=HIDDEN NAME="start_price" VALUE="{{ start_price }}">
-    #     <INPUT TYPE=HIDDEN NAME="endtime" VALUE="{{ endtime }}">
-    #     <input type="submit" value="Submit">
+    def test_addbid_too_low_bid(self):
+        pid_value = 5.0
+        bid_count = Bid.objects.count()
+        #print("pid_val: ", self.auction.latest_bid)
+        response = self.client.post('/savebid/' + str(self.auction.pk),
+                                    {'bid': pid_value, 'auction_id': self.auction,
+                                     'latest_bid': self.auction.latest_bid,
+                                     'description': '', 'endtime': ''})
+        m = list(response.context['messages'])
+        #print("msg 0: ",str(m[0]))
+        self.assertEqual(bid_count, Bid.objects.count()) #"bid value must be at least 0.01 higher than previous bid."
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(m[0]), "bid value must be at least 0.01 higher than previous bid.")
+
+    def test_addbid_bidding_ending(self):
+        pid_value = 5.6
+        bid_count = Bid.objects.count()
+        # print("pid_val: ", self.auction.latest_bid)
+        org_ending=self.auction_ending.endtime
+
+        print("Testing time ", org_ending)
+        response = self.client.post('/savebid/' + str(self.auction_ending.pk),
+                                    {'bid': pid_value, 'auction_id': self.auction_ending,
+                                     'latest_bid': self.auction_ending.latest_bid,
+                                     'description': '', 'endtime': ''})
+
+        self.assertEqual(bid_count+1,
+                         Bid.objects.count())  # "bid value must be at least 0.01 higher than previous bid."
+        time_now=datetime.now()
+
+        self.assertGreater(org_ending, datetime.strftime(time_now, '%Y-%m-%d %H:%M'))
+        self.assertEqual(org_ending, self.auction_ending.endtime)
+        self.assertEqual(response.status_code, 302)
+
+    def test_addbid_bidding_already_ended(self):
+        #self.auction_ending.auction_status='C'
+        pid_value = 5.6
+        bid_count = Bid.objects.count()
+        #print("auction_status: ", self.auction_ended.auction_status)
+        org_ending = self.auction_ended.endtime
+
+        #print("Testing time ", org_ending)
+        response = self.client.post('/savebid/' + str(self.auction_ended.pk),
+                                    {'bid': pid_value, 'auction_id': self.auction_ended,
+                                     'latest_bid': self.auction_ended.latest_bid,
+                                     'description': '', 'endtime': ''})
+
+        self.assertEqual(bid_count ,
+                         Bid.objects.count())
+        m = list(response.context['messages'])
+        #print("message: ",str(m[0]))
+        self.assertEqual(str(m[0]),"biding time has ended.")
+        self.assertEqual(response.status_code, 200)
+
+    def test_addbid_seller_adds_bid_to_own_auction(self):
+        self.client.logout()
+        self.client.login(username='seller', password='sel56')
+        user=auth.get_user(self.client)
+        response = self.client.get('/addbid/' + str(self.auction.pk),follow=True)
+        m = list(response.context['messages'])
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(m[0]), "Seller is not allowed to bid")
+        self.assertRedirects(response, '/')
+
+    def test_addbid_user_adds_bid_to_auction(self):
+
+        self.client.logout()
+        self.client.login(username='alf',email='alf@trader.fi', password='alf123')
+        user = auth.get_user(self.client)
+        response = self.client.get('/addbid/' + str(self.auction.pk),follow=True)
+        self.assertEqual(response.status_code, 200)
 
 class ConcurrencyTestCases(TestCase):
-    auction_count=0
-    auction_count_new=0
+
     fixtures = ['db_data.json']
 
     @classmethod
-    def setUp(cls):
-        print("Concurrency Test init: START***********************************************************************************")
-        cls.auction_count = Auction.objects.count()
-        cls.user =User.objects.create_user(username='alf', email='alf@trader.fi', password='alf123')
-        cls.auction = Auction.objects.create(seller=cls.user, title='Old Sledgehammer', auction_status='A',
-                                             description='Rusty Sledgehammer for sale', start_price=5.0, latest_pid=5.0,
-                                             endtime='2018-04-27 18:00')
-        cls.auction.save()
-        print("auction before test ", str(cls.auction_count) + ". Auction count after tests ",
-              str(Auction.objects.count()))
+    def setUp(self):
 
-        #response = cls.client.login(username='alf', password='alf123')
-        print("Test init: *************************************************************************************END")
-
-    def test_adding_pid(self):
-        # addinf test user
-        self.user = User.objects.create_user(username='tester', email='tester@testing.fi', password='tester123')
+        self.auction_count = Auction.objects.count()
+        endtime = datetime.now()+timedelta(days=4)
+        self.seller = User.objects.get(username='seller')
+        self.auction = Auction.objects.create(seller=self.seller, title='Old Sledgehammer', auction_status='A',
+                                             description='Rusty Sledgehammer for sale', start_price=5.0, latest_bid=5.0,
+                                             endtime=datetime.strftime(endtime, '%Y-%m-%d %H:%M'))
+        self.auction.lockedby = "test"
+        self.auction.save()
+        #self.tester = User.objects.create_user(username='tester', email='tester@testing.fi', password='tester123')
+        self.tester = User.objects.get(username='alf')
+        #changing auction lockedby status
+        print("Locked by status:",self.auction.lockedby)
 
 
-        response = self.client.login(username='tester', password='tester123')
-
-
-        #auction_count = Auction.objects.count()
-        #print("auction before test ",str(self.auction_count)+". Auction count after tests ", str(Auction.objects.count()))
+    def test_adding_bid_when_auction_is_locked(self):
+        # adding test user
+        response = self.client.login(username='alf', password='alf123')
         test=Auction.objects.get(title='Old Sledgehammer')
+        response = self.client.get('/addbid/'+str(test.id),follow=True)
 
-        print("finding auction",test)
-        print("finding auction count", str(Auction.objects.count()))
-        response = self.client.get('/addpid/'+str(test.id))
-        print("Pid testing: ",response)
-        print("user testing: ", test.id )
+        msg = list(response.context['messages'])
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(msg[0]), "Someone else is currently accessing auction data. Try again a bit later.")
+        self.assertRedirects(response, '/')
 
-    def test_pid_while_in_use(self):
+    def test_editauction_when_auction_is_locked(self):
         # addinf test user
-        self.tester = User.objects.create_user(username='tester', email='tester@testing.fi', password='tester123')
-
-        response = self.client.login(username='tester', password='tester123')
-        #self.client.login(username='Alf', password='alf123')
-
-        print("editauction",response)
-
-        #c = Client(HTTP_USER_AGENT='Mozilla/5.0')
-        #b = Client(HTTP_USER_AGENT='Mozilla/4.0')
-        #c.login(username='tester', password='tester123')
-        print("user: " + str(self.tester))
+        response = self.client.login(username='seller', password='sel56')
         test = Auction.objects.get(title='Old Sledgehammer')
-        print("auction is locked by: ",test.title)
-        test.lockedby="himokas"
-        #response = c.get('/editauction/' + str(test.id))
-        #print("first resp:",response)
-        #b.login(username='Alf', password='alf123')
-        resp=self.client.get('/addpid/' + str(test.id))
-        print("2nd resp:", resp)
-        print("now auction is locked by: ", test.lockedby)
-        # auction_count = Auction.objects.count()
-        # print("auction before test ",str(self.auction_count)+". Auction count after tests ", str(Auction.objects.count()))
-        #test = Auction.objects.get(title='Old Sledgehammer')
+        response=self.client.get('/editauction/' + str(test.id),follow=True)
+        msg = list(response.context['messages'])
+        print("msg: ", str(msg[0]))
+        self.assertEqual(str(msg[0]), "Auction is currently used by another user. You can try to edit auction later.")
+        #self.assertRedirects(response, '/')
 
-        #print("finding auction", test)
-        #print("finding auction count", str(Auction.objects.count()))
-        #response = self.client.get('/addpid/' + str(test.id))
-        #print("Pid testing: ", response)
-        #print("user testing: ", test.id)
+    def test_banauction_when_auction_is_locked(self):
+        # addinf test user
+        response = self.client.login(username='seller', password='sel56')
+        test = Auction.objects.get(title='Old Sledgehammer')
+        response=self.client.get('/banview/' + str(test.id),follow=True)
+        print(response)
+        msg = list(response.context['messages'])
+
+        self.assertEqual(str(msg[0]), "Someone else is currently accessing auction data. Try again a bit later.")
+        self.assertEquals(response.status_code, 200)

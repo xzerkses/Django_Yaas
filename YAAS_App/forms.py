@@ -21,11 +21,11 @@ def validate_endtime(end_date):
     enddateobj = datetime.strptime(endobj,'%Y-%m-%d %H:%M')
     delta=enddateobj-dateobjnow
     if (delta<timedelta(hours=72)):
-        raise ValidationError(' Pidding time must be longer than 72 hours.')
+        raise ValidationError(' Bidding time must be longer than 72 hours.')
 
-def validate_pidtime(end_datetime):
+def validate_bidtime(end_datetime):
     if datetime.now()>end_datetime:
-        raise ValidationError('Pidding not possible anymore. Pidding ended.')
+        raise ValidationError('Bidding not possible anymore. Bidding ended.')
 
 
 
@@ -33,7 +33,7 @@ def validate_pidtime(end_datetime):
 
 def validate_status(value):
     if not value == 'A':
-        raise ValidationError(('pidding not possible anymore. Auction is not active anymore.'),
+        raise ValidationError(('Bidding not possible anymore. Auction is not active anymore.'),
                               params={'value': value})
 
 
@@ -45,8 +45,8 @@ class CreateAuction(forms.Form):
     start_price=forms.DecimalField(max_digits=6,decimal_places=2,validators=[MinValueValidator(0.01)])
     endtime=forms.DateTimeField(required=True,validators=[validate_endtime],help_text="Please use the following format: <em>YYYY-mm-dd HH:MM</em>.")
 
-class AddPid(forms.Form):
-    pid=forms.DecimalField(required=True,max_digits=6,decimal_places=2,validators=[])
+class AddBid(forms.Form):
+    bid=forms.DecimalField(required=True,max_digits=6,decimal_places=2,validators=[])
 
 class ConfirmAuction(forms.Form):
     CHOICES = [(x, x) for x in ("Yes", "No")]
